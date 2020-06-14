@@ -1,0 +1,25 @@
+.Footer {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    margin-top: 79vh;
+    left: 0;
+    background-color: #703B09;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 90;
+
+}
+
+.Footer nav {
+    height: 100%;
+}
+
+@media (max-width : 499px) {
+    .DesktopOnly {
+        display: none;
+    }
+}
