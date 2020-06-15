@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/constants';
 
 const initialState = {
-    profileInfo: null
+    profileInfo: null,
+    isSuperUser: null
 };
 
 const profilesReducer = (state = initialState, action) => {
@@ -34,9 +35,15 @@ const profilesReducer = (state = initialState, action) => {
             };
         case actionTypes.GET_PROFILE_API_CALL_SUCCESS:
             console.log("GET_PROFILE_API_CALL_SUCCESS", action.data);
+                console.log("ACTION DATA IN REDUCER : ",action.data);
+                let isSuperUser = false;
+                if(action.data.role && action.data.role === 'superuser'){
+                    isSuperUser = true
+                }
             return {
                 ...state,
-                profileInfo: action.data
+                profileInfo: action.data,
+                isSuperUser: isSuperUser
             };
         default:
             return state;

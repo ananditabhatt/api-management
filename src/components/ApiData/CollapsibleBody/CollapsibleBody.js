@@ -35,15 +35,13 @@ const collapsibleBody = props => {
             for (let keys in props.buttons) {
                 switch (props.buttons[keys].handler) {
                     case 'getScopeTable':
-                        content.push(<span className={classes.TextFieldsValues}><a onClick={(details) => { props.getScopeTable(props.details) }}><u>{props.buttons[keys].id}</u></a></span>);
+                        content.push(<span className={classes.TextFieldsBtns}><a onClick={(details) => { props.getScopeTable(props.details) }}><u>{props.buttons[keys].id}</u></a></span>);
                         break;
                     case 'handleEditRequest':
-                        if (props.isSuperUser)
-                            content.push(<span className={classes.TextFieldsValues}><a onClick={(details) => { props.handleEditRequest(props.details) }} ><i className="material-icons">{props.buttons[keys].id}</i></a></span>)
+                            content.push(<span className={classes.TextFieldsBtns}><a onClick={(details) => { props.handleEditRequest(props.details) }} ><i className="material-icons">{props.buttons[keys].id}</i></a></span>)
                         break;
                     case 'handleDeleteRequest':
-                        if (props.isSuperUser)
-                            content.push(<span className={classes.TextFieldsValues}><a onClick={(details) => { props.handleDeleteRequest(props.details) }} ><i className="material-icons">{props.buttons[keys].id}</i></a></span>)
+                            content.push(<span className={classes.TextFieldsBtns}><a onClick={(details) => { props.handleDeleteRequest(props.details) }} ><i className="material-icons">{props.buttons[keys].id}</i></a></span>)
                         break;
                 }
             }

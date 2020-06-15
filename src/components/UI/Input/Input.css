@@ -27,6 +27,10 @@
 }
 
 .Invalid{
-    border: 1px solid red;
+    border: 1px solid #ff000093;
     background-color: #FDA49A;
+}
+
+.Validate{
+    color: white;
 }

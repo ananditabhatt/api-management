@@ -5,14 +5,17 @@ const Input = (props) => {
     let inputElement = null;
     let validationError = null;
     const inputClasses = [classes.InputElement];
+    console.log("props in input ",props);
     if (props.invalid && props.ShouldValidate && props.touched) {
         inputClasses.push(classes.Invalid);
-        validationError = <p>Please enter a valid {props.elementConfig.placeholder}</p>
+        if(props.classes !=undefined)
+        inputClasses.push(props.classes);
+        validationError = <p style={{color:'red'}}>Please enter a valid {props.elementConfig.placeholder}</p>
     }
 
     switch (props.elementType) {
         case ('input'):
-            inputElement = <input defaultValue={props.defaultValue} className='validate'
+            inputElement = <input required defaultValue={props.defaultValue} className={classes.Validate}
                 {...props.elementConfig}
                 onChange={props.changed}
                 value={props.value} />
@@ -45,7 +48,7 @@ const Input = (props) => {
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
             {inputElement}
-            {validationError}
+            {/* {validationError} */}
         </div>
     );
 }

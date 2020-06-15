@@ -1,0 +1,11 @@
+.ErrorModal{
+    height: 14vh;
+    display: flex;
+    margin-top: 2%;
+    width: 63vh;
+    color: #c50303bd;
+}
+.WarningText{
+    margin: 0 0px 0px 22px;
+    color: black;
+}

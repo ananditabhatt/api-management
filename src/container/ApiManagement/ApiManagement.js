@@ -9,16 +9,23 @@ import * as actionCreators from '../../store/actions/actionCreators';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import axios from '../../axios-users';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import SuccessModal from '../../components/SuccessModal/SuccessModal'
+import { updateAWSApi, generateAWSApiKey, deletAWSApiKey } from '../../PublicAPI/AWS/awsApiCalls';
+import Modal from '../../components/UI/Modal/Modal';
 
-const DEFAULT_ROLE = 'user';
-const apigateway = new APIGateway({
-    apiVersion: '2015-07-09',
-    region: process.env.REACT_APP_AWS_REGION,
-    credentials: { accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID, secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY }
-});
 
 const ApiManagement = props => {
+    const [scopetable, populateScopeTable] = useState(null);
+    const [deleteAPIWarning, populateDeleteAPIWarning] = useState(null);
+    const [editModalData, populateEditModal] = useState(null);
+    const [successModal, showSuccessModal] = useState(false);
+    const [deleteWarningModal, showDeleteWarningModal] = useState(false);
+    const [editModal, showEditModal] = useState(false);
+    const [scopeModal, showScopeModal] = useState(false);
+    const [showSpinnerForContent, toggleShowSpinnerForContent] = useState(false);
+    const [errorModal, setErrorModal] = useState('');
+    const [showSecret, setShowSecret] = useState(false);
     const [keyGeneratorElements, setKeyGeneratorElement] = useState({
         keyGeneratorName: {
             elementType: 'input',
@@ -27,26 +34,13 @@ const ApiManagement = props => {
                 placeholder: 'Name'
             },
             value: '',
+            touched: false,
             validation: {
                 required: true
             },
             valid: false
         }
     });
-
-    const [scopetable, populateScopeTable] = useState(null);
-    const [deleteAPIWarning, populateDeleteAPIWarning] = useState(null);
-    const [editModalData, populateEditModal] = useState(null);
-    const [successModal, showSuccessModal] = useState(false);
-    const [tempToggleState, changeTempToggleState] = useState(false);
-    const [tempApiName, changeTempApiName] = useState('');
-    const [deleteWarningModal, showDeleteWarningModal] = useState(false);
-    const [editModal, showEditModal] = useState(false);
-    const [scopeModal, showScopeModal] = useState(false);
-    const [showSpinnerForContent, toggleShowSpinnerForContent] = useState(false);
-    const [errorModal, showErrorModal] = useState(false);
-    const [isSuperUser, setIsSuperUser] = useState(false);
-    const [showSecret, setShowSecret] = useState(false);
 
     useEffect(() => {
         console.log("FIRST USE EFFECT CALLED props: ", props);
@@ -55,279 +49,65 @@ const ApiManagement = props => {
         props.getUserProfile(props.userId);
     }, []);
 
-    const { profileInfo } = props;
-    useEffect(() => {
-        console.log("SECOND USE EFFECT CALLED props: ", props);
-        if (props.profileInfo) {
-            setIsSuperUser(props.profileInfo.role == 'superuser');
-        }
-      }, profileInfo);
-
-    let keyGeneratorElementArray = [];
-    for (let key in keyGeneratorElements) {
-        keyGeneratorElementArray.push({
-            id: key,
-            config: keyGeneratorElements[key]
-        });
+    const deletAWSApiKeyHandler = key => {
+        deletAWSApiKey(key, toggleShowSpinnerForContent, props.apiData, props.onDeleteUserData, setErrorModal);
     }
 
-    const deletAWSApiKey = (key) => {
-        var params = {
-            apiKey: key
-        };
-        toggleShowSpinnerForContent(true);
-        apigateway.deleteApiKey(params, function (err, data) {
-            if (err) {
-                console.log("Error occured!");
-                console.log(err, err.stack);
-                toggleShowSpinnerForContent(false);
-            }
-            else {
-                Object.keys(props.apiData).map(keys => {
-                    for (let id in props.apiData[keys]) {
-                        console.log("ID IS ", id);
-                        if (id === key) {
-                            console.log("KEY TO DELETE IS", keys)
-                            props.onDeleteUserData(keys);
-                        }
-                    }
-                });
-                toggleShowSpinnerForContent(false);
-            }
-        });
-    }
-    const toggleAWSApiKey = (data) => {
-        //data.enabled = false;
-        let params = {
-            apiKey: data.client_id,
-            patchOperations: [
-                {
-                    from: '',
-                    op: 'replace',
-                    path: '/enabled',
-                    value: data.enabled ? 'true' : 'false'
-                }
-            ]
-        };
-        apigateway.updateApiKey(params, function (err, data) {
-            if (err) { console.log(err, err.stack); }// an error occurred
-            else {
-                console.log("UPDATED ", data);
-                let value = null
-                let key = null
-                Object.keys(props.apiData).map(keys => {
-                    for (let id in props.apiData[keys]) {
-                        console.log("ID IS ", id);
-                        if (id === data['id']) {
-                            value = props.apiData[keys][id].value;
-                            key = keys;
-                        }
-                    }
-                });
-                let jsonData = {};
-                jsonData[data['id']] = {
-                    "createdDate": data['createdDate'],
-                    "client_id": data['id'],
-                    "role": DEFAULT_ROLE,
-                    "enabled": data['enabled'],
-                    "scope": {
-                        "events": {
-                            read: true,
-                            write: false
-                        },
-                        "manageUsers": {
-                            "read": false,
-                            "write": false
-                        }
-                    },
-                    "value": value,
-                    "lastUpdatedDate": data['lastUpdatedDate'],
-                    "userName": "annie",
-                    "name": data['name']
-                };
-                props.onUpdateUserData(jsonData, key);
+    const updateAWSApiHandler = data => {
+        updateAWSApi(data, props.apiData, props.userId, props.onUpdateUserData, toggleShowSpinnerForContent, setErrorModal);
 
-            }
-        });
     }
 
-    const updateAWSApiName = (data) => {
-        let params = {
-            apiKey: data.client_id,
-            patchOperations: [
-                {
-                    from: '',
-                    op: 'replace',
-                    path: '/name',
-                    value: data.name
-                },
-                {
-                    from: '',
-                    op: 'replace',
-                    path: '/enabled',
-                    value: data.enabled ? 'true' : 'false'
-                }
-            ]
-        };
-        toggleShowSpinnerForContent(true);
-        apigateway.updateApiKey(params, function (err, data) {
-            if (err) { console.log(err, err.stack); }// an error occurred
-            else {
-                console.log("UPDATED ", data);
-                let value = null
-                let key = null
-                Object.keys(props.apiData).map(keys => {
-                    for (let id in props.apiData[keys]) {
-                        console.log("ID IS ", id);
-                        if (id === data['id']) {
-                            value = props.apiData[keys][id].value;
-                            key = keys;
-                        }
-                    }
-                });
-                let jsonData = {};
-                jsonData[data['id']] = {
-                    "createdDate": data['createdDate'],
-                    "client_id": data['id'],
-                    "role": DEFAULT_ROLE,
-                    "enabled": data['enabled'],
-                    "scope": {
-                        "events": {
-                            read: true,
-                            write: false
-                        },
-                        "manageUsers": {
-                            "read": false,
-                            "write": false
-                        }
-                    },
-                    "value": value,
-                    "lastUpdatedDate": data['lastUpdatedDate'],
-                    "userName": "annie",
-                    "name": data['name']
-                };
-                props.onUpdateUserData(jsonData, key);
-                toggleShowSpinnerForContent(false);
-            }
-        });
-    }
-
-    const generateAWSApiKey = (event) => {
-        event.preventDefault()
+    const generateAWSApiKeyHandler = event => {
         if (!keyGeneratorElements.keyGeneratorName.valid) {
-            alert("INVALID!");
+            event.preventDefault();
+            setErrorModal('Invalid Input Provided.');
             return;
-
         }
-        var params = {
-            description: 'Created by : ',
-            enabled: true,
-            name: keyGeneratorElements.keyGeneratorName.value
-        };
-
-        apigateway.createApiKey(params, function (err, data) {
-            if (err) {
-
-            }
-            else {
-                showSuccessModal(true);
-                let jsonData = {};
-                jsonData[data['id']] = {
-                    "createdDate": data['createdDate'],
-                    "client_id": data['id'],
-                    "role": DEFAULT_ROLE,
-                    "enabled": true,
-                    "scope": {
-                        "events": {
-                            read: true,
-                            write: false
-                        },
-                        "manageUsers": {
-                            "read": false,
-                            "write": false
-                        }
-                    },
-                    "value": data['value'],
-                    "lastUpdatedDate": data['lastUpdatedDate'],
-                    "userName": "annie",
-                    "name": keyGeneratorElements.keyGeneratorName.value
-                };
-                props.onPostUserData(jsonData);
-            }
-        });
+        generateAWSApiKey(event, keyGeneratorElements.keyGeneratorName.value, props.userId, showSuccessModal, props.onPostUserData, setErrorModal);
+        const updatedElements = { ...props.keyGeneratorElements };
+        const updatedElement = { ...updatedElements['keyGeneratorName'] };
+        updatedElement.value = '';
+        updatedElement.touched = false;
+        updatedElement.valid = false
+        updatedElements['keyGeneratorName'] = updatedElement;
+        setKeyGeneratorElement(updatedElements);
     }
 
-    const checkValidity = (value, validation) => {
-        let isValid = true
-        console.log(" value ", value);
-        if (validation.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-        return isValid;
-    }
-
-    const inputChangeListner = (event, id) => {
-        console.log("input changelistner : ", id);
-        switch (id) {
-            case 'keyGeneratorName':
-                const updatedElements = { ...keyGeneratorElements };
-                const updatedElement = { ...updatedElements[id] };
-                updatedElement.value = event.target.value;
-                updatedElement.valid = checkValidity(updatedElement.value, updatedElement.validation)
-                updatedElements[id] = updatedElement;
-                let formISValid = true;
-                for (let id in updatedElements) {
-                    formISValid = updatedElements[id].valid && formISValid
-                }
-                setKeyGeneratorElement(updatedElements);
-                break;
-            default:
-                return null;
-        }
-    }
-    console.log('isSuperUser IN API MANAGEMENT ', isSuperUser);
     return (
         <div>
-            <video
-                className={classes.myVideo}
-                loop
-                autoplay="autoplay"
-                id="myVideo">
-                <source src={loginBackground} type="video/mp4" />
+            <video className={classes.myVideo} loop autoplay="autoplay" id="myVideo"><source src={loginBackground} type="video/mp4" />
               Your browser does not support HTML5 video.
             </video>
             <div className={classes.content}>
+                <Modal modalClosed={() => setErrorModal('')} show={errorModal}><ErrorModal error={errorModal}/></Modal>
                 <KeyGenerator
-                    keyGeneratorElementArray={keyGeneratorElementArray}
-                    generateAWSApiKey={generateAWSApiKey}
-                    inputChangeListner={inputChangeListner} />
-               <SuccessModal showSuccessModal={showSuccessModal} successModal={successModal}/>
-                {(props.apiData && !showSpinnerForContent)? <ApiData
-                    deletAWSApiKey={(data) => deletAWSApiKey(data)}
-                    toggleAWSApiKey={(data) => toggleAWSApiKey(data)}
-                    updateAWSApiName={(data) => updateAWSApiName(data)}
+                    keyGeneratorElements={keyGeneratorElements}
+                    setKeyGeneratorElement={setKeyGeneratorElement}
+                    generateAWSApiKeyHandler={generateAWSApiKeyHandler} />
+                <SuccessModal showSuccessModal={showSuccessModal} successModal={successModal} />
+                {(props.apiData && !showSpinnerForContent && props.profileInfo) ? <ApiData
+                    deletAWSApiKeyHandler={(data) => deletAWSApiKeyHandler(data)}
+                    updateAWSApiHandler={(data) => updateAWSApiHandler(data)}
                     apiData={props.apiData}
                     scopeModal={scopeModal}
+                    showScopeModal={showScopeModal}
                     scopetable={scopetable}
                     populateScopeTableHandler={(data) => { populateScopeTable(data); showScopeModal(true); }}
-                    showScopeModal={showScopeModal}
                     editModal={editModal}
                     showEditModal={showEditModal}
+                    populateEditModal={(data) => { populateEditModal(data); showEditModal(true); }}
                     deleteWarningModal={deleteWarningModal}
                     showDeleteWarningModal={showDeleteWarningModal}
                     populateDeleteAPIWarning={(data) => { populateDeleteAPIWarning(data); showDeleteWarningModal(true); }}
-                    populateEditModal={(data) => { populateEditModal(data); showEditModal(true); }}
-                    editModalData={editModalData}
                     deleteAPIWarning={deleteAPIWarning}
-                    tempToggleState={tempToggleState}
-                    changeTempToggleState={changeTempToggleState}
-                    tempApiName={tempApiName}
-                    changeTempApiName={changeTempApiName}
+                    editModalData={editModalData}
                     showSpinnerForContent={showSpinnerForContent}
                     toggleShowSpinnerForContent={toggleShowSpinnerForContent}
-                    isSuperUser={isSuperUser}
+                    isSuperUser={props.isSuperUser}
                     showSecret={showSecret}
                     setShowSecret={setShowSecret}
+                    profileInfo={props.profileInfo}
                     roles={props.roles} /> : <Spinner />}
             </div>
         </div>
@@ -338,8 +118,8 @@ const mapDispatchToState = state => {
     return {
         apiData: state.manageUsersReducer.apiData,
         profileInfo: state.profilesReducer.profileInfo,
-        userId: state.auth.userId
-        // roles: state.rbacReducer.roles
+        userId: state.auth.userId,
+        isSuperUser: state.profilesReducer.isSuperUser
     };
 }
 

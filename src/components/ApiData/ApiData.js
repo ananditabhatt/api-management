@@ -23,11 +23,11 @@ const apiData = props => {
         M.Collapsible.init(this.Collapsible4);
         M.FormSelect.init(document.querySelectorAll('select'), {});
     }, []);
-    
+
     //Scope Modal.
     const getScopeTable = (details) => {
         console.log("The details are : ", details);
-        const tableData = (<ScopeTable details={details}/>);
+        const tableData = (<ScopeTable details={details} />);
         props.populateScopeTableHandler(tableData);
     };
 
@@ -37,7 +37,8 @@ const apiData = props => {
         if (props.apiData != undefined) {
             for (let keys in textFieldsCollapsiblebodyObj) {
                 collapsibleBodyObject[textFieldsCollapsiblebodyObj[keys]] = details[keys];
-            }}
+            }
+        }
         return <CollapsibleBody
             details={details}
             showSecret={props.showSecret}
@@ -54,7 +55,7 @@ const apiData = props => {
         let dataModal = (
             <DeleteWarningModal
                 details={details}
-                deletAWSApiKey={(id) => props.deletAWSApiKey(id)}
+                deletAWSApiKeyHandler={(id) => props.deletAWSApiKeyHandler(id)}
                 showDeleteWarningModal={props.showDeleteWarningModal}
             />
         )
@@ -73,21 +74,30 @@ const apiData = props => {
     const updateApiCardSaveHandler = (details) => {
         console.log("data in updateApiCardSaveHandler ", details);
         let updatedData = { ...details }
-        props.updateAWSApiName(updatedData);
+        props.updateAWSApiHandler(updatedData);
     }
 
     // formating Api data to an array to create structure.
     let dataArray = [];
     if (props.apiData != undefined) {
+        console.log("api data : ");
         Object.keys(props.apiData).map((userInfo) => {
             console.log("userInfo : ", props.apiData[userInfo]);
             for (let key in props.apiData[userInfo]) {
-                console.log();
-                dataArray.push({
-                    id: key,
-                    details: props.apiData[userInfo][key]
-                })
-            };
+                console.log("key : ", key, " userid : ",props.profileInfo.userId);
+                console.log("props : ", props.apiData[userInfo][key]);
+                if (props.apiData[userInfo][key].userId === props.profileInfo.userId) {
+                    dataArray.push({
+                        id: key,
+                        details: props.apiData[userInfo][key]
+                    })
+                } else if (props.isSuperUser) {
+                    dataArray.push({
+                        id: key,
+                        details: props.apiData[userInfo][key]
+                    })
+                }
+            }
         });
     }
     // Api Data Structure

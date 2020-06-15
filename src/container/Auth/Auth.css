@@ -39,6 +39,7 @@
     width: 500px;
     color: white;
     height: 435px;
+    top: 3vh;
     padding: 10px;
     -webkit-perspective: 1000px;
     perspective: 1000px;

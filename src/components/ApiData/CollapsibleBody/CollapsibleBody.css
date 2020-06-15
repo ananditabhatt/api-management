@@ -5,9 +5,20 @@
 }
 .TextFieldsValues{
     color: white;
-    padding: 0px 90px 0px 0px;
+    padding: 0px 125px 0px 0px;
     font-style: italic;
 }
+
+.TextFieldsBtns{
+    color: white;
+    padding: 22px 25px 0px 25px;
+    font-style: italic;
+}
+.TextFieldsBtns a{
+    color: whitesmoke;
+    cursor: pointer;
+}
+
 .TextFieldsValues a{
     color: whitesmoke;
     cursor: pointer;
