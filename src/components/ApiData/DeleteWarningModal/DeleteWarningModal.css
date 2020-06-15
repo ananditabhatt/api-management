@@ -1,0 +1,15 @@
+.DeleteModal {
+    display: flex;
+    min-height: 13vh;
+    min-width: 55vh;
+    padding: 5px;
+}
+
+.DeleteWarningText{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.DelBtns{
+display: flex;
+margin-left: 78%;
+}

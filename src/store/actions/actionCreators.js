@@ -9,6 +9,11 @@ export {
     updateUserData
 } from './manageUsersAction'
 
+export { 
+    getUserProfile, 
+    addUserProfile
+} from './profilesAction'
+
 export {
     AC_auth,
     AC_authLogout,

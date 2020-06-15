@@ -1,0 +1,29 @@
+
+.TextFields{
+    color: white;
+    display: flex;
+}
+.TextFieldsValues{
+    color: white;
+    padding: 0px 90px 0px 0px;
+    font-style: italic;
+}
+.TextFieldsValues a{
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+.Secret button{
+    color: whitesmoke;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 0;
+    text-transform: none;
+    box-shadow: none;
+    text-decoration: underline;
+    background-color: transparent;
+}
+.Secret button:hover{
+    background-color: transparent;
+    box-shadow: none;
+}

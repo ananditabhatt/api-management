@@ -7,7 +7,7 @@ const KeyGenerator = props => {
     return (
         <div className={classes.KeyGenerator}>
             <form onSubmit={(event) => { props.generateAWSApiKey(event)}}>
-                {props.elementArray.map(element => (
+                {props.keyGeneratorElementArray.map(element => (
                 <Input
                     key={element.id}
                     elementType={element.config.elementType}
@@ -18,7 +18,7 @@ const KeyGenerator = props => {
                 changed={(event) => { props.inputChangeListner(event, element.id)}}
                 />)
             )}
-            <CustomButton btnType='Success'>Generate</CustomButton>
+            <CustomButton classes={classes.btn}>&nbsp;&nbsp;Generate New API Key&nbsp;&nbsp;</CustomButton>
              </form> 
         </div>
     );

@@ -1,6 +1,7 @@
 import * as actionTypes from "./constants";
 import axios from '../../axios-users';
 import firebase from "firebase";
+import { addUserProfile } from './profilesAction';
 
 
 export const authStart = () => {
@@ -9,11 +10,12 @@ export const authStart = () => {
     })
 }
 
-export const authSuccess = (idToken, userId) => {
+export const authSuccess = (idToken, userId, email) => {
     return ({
         type: actionTypes.AUTH_SUCCESS,
         idToken: idToken,
-        userId: userId
+        userId: userId,
+        email:email
     })
 }
 
@@ -58,15 +60,18 @@ export const AC_auth_google = () => {
         }
         let provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function (result) {
+            console.log("GOOGLE RESULE ",result);
             let token = result.credential.idToken;
             let userId = result.user.uid;
-            let user = result.user;
+            let email = result.user.email;
             const ExpirationDate = new Date(new Date().getTime() + 3600000)
             localStorage.setItem('token', token);
             localStorage.setItem('ExpirationDate', ExpirationDate);
             localStorage.setItem('userID', userId);
-            dispatch(authSuccess(token, userId));
+            dispatch(authSuccess(token, userId, email));
             dispatch(authExpiration(3600));
+            let data = { userId: result.user.uid, email: result.user.email, role: 'user'}
+            dispatch(addUserProfile(data));
         });
     })
 }
@@ -89,8 +94,13 @@ export const AC_auth = (email, password, isSignUp) => {
                 localStorage.setItem('token', Response.data.idToken);
                 localStorage.setItem('ExpirationDate', ExpirationDate);
                 localStorage.setItem('userID', Response.data.localId);
-                dispatch(authSuccess(Response.data.idToken, Response.data.localId));
+                localStorage.setItem('email', Response.data.email);
+                dispatch(authSuccess(Response.data.idToken, Response.data.localId,Response.data.email ));
                 dispatch(authExpiration(Response.data.expiresIn));
+                let data = { userId: Response.data.localId, email: Response.data.email, role: 'user'}
+                if(isSignUp)
+                    dispatch(addUserProfile(data));
+
             })
             .catch(error => {
                 console.log(error.response);
@@ -108,8 +118,9 @@ export const AC_Auth_CheckState = () => {
         else {
             const ExpirationDate = new Date(localStorage.getItem('ExpirationDate'));
             const userID = localStorage.getItem('userID');
+            const email = localStorage.getItem('email');
             if (ExpirationDate > new Date().getTime()) {
-                dispatch(authSuccess(token, userID));
+                dispatch(authSuccess(token, userID, email));
                 dispatch(authExpiration((ExpirationDate.getTime() - new Date().getTime()) / 1000));
             }
             else {
@@ -146,9 +157,10 @@ export const AC_authReset = (email) => {
         requestType: 'PASSWORD_RESET',
         email: email
     }
+    let url = process.env.REACT_APP_FIREBASE_RESET_URL;
     return dispatch => {
         dispatch(authReset_Start());
-        axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDwjl3yTTc9cYRQZsDuyOsxcY2jWuqyTVA', data)
+        axios.post(url, data)
             .then(Response => {
                 console.log(" success console in reset ", Response.data)
                 dispatch(authReset_Success(Response.data.email));

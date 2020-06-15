@@ -173,61 +173,98 @@ class Auth extends Component {
         console.log("the state is : ",this.state);
 
         return (
-            <Aux>
-                {autoReditect}
-                    {/* background video component with autoplay and mute*/}
-                <video className={classes.myVideo} loop autoplay='autoplay' id="myVideo">
-                    <source src={loginBackground} type="video/mp4" />
-                    Your browser does not support HTML5 video.
-                </video>
-                    {/* Footer Telstra T22 Content*/}
-                    <div style={{zIndex:'2', position:'absolute'}}>
-                <div className={classes.contentlogin}>
-                    <h1>Telstra's API Management</h1>
-                    <p>
-                        Our Stratergies and Goals are aligned with Enterprise T22 Strategy
-                        which will enable us to lead the Australian market by simplifying
-                        our products and services to improve customer experience.
+          <Aux>
+            {autoReditect}
+            {/* background video component with autoplay and mute*/}
+            <video
+              className={classes.myVideo}
+              loop
+              autoplay="autoplay"
+              id="myVideo"
+            >
+              <source src={loginBackground} type="video/mp4" />
+              Your browser does not support HTML5 video.
+            </video>
+            {/* Footer Telstra T22 Content*/}
+
+            <div className={classes.contentlogin}>
+              <h3>Telstra's API Management</h3>
+              <p>
+                Our Stratergies and Goals are aligned with Enterprise T22
+                Strategy which will enable us to lead the Australian market by
+                simplifying our products and services to improve customer
+                experience.
+              </p>
+              <h6 className={classes.login_copyright}>
+                &copy;Telstra Corporation Limited
+              </h6>
+            </div>
+            {/* SignUp/SignIn Flip cards*/}
+            <div className={["flip-card", classes.flipcard].join(" ")}>
+              <div
+                className={["flip-card-inner", classes.flipcardinner].join(" ")}
+              >
+                <div
+                  className={["flip-card-front", classes.flipcardfront].join(
+                    " "
+                  )}
+                >
+                  <img src={signup} alt="Signup" />
+                </div>
+
+                <div
+                  className={["flip-card-back", classes.flipcardback].join(
+                    " "
+                  )}
+                >
+                  <form onSubmit={this.submitHandler}>
+                    <h2>{this.state.isSignUp ? "SignUp" : "SignIn"}</h2>
+                    {errorMessage}
+                    {form}
+                    <div>
+                      <button className={classes.myBtn}>
+                        {this.state.isSignUp ? (
+                          "SignUp"
+                        ) : (
+                          <i className="fa fa-envelope"> SignIn With Email</i>
+                        )}
+                      </button>
+                    </div>
+                    <br />
+                    <div>
+                      {this.state.isSignUp ? (
+                        ""
+                      ) : (
+                        <button
+                          className={classes.myBtn}
+                          onClick={this.GoogleAuth}
+                        >
+                          <i className="fa fa-google "> Login With Google</i>
+                        </button>
+                      )}
+                    </div>
+                    <p style={{ fontSize: "10px", textAlign: "center" }}>
+                      {this.state.isSignUp
+                        ? "By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy."
+                        : null}
                     </p>
-                    <h6 className={classes.login_copyright}>&copy;Telstra Corporation Limited</h6>
+                  </form>
+                  <i
+                    onClick={this.switchToLogin}
+                    style={{ textDecoration: "underline", marginRight: "21px" ,cursor:"pointer"}}
+                  >
+                    Switch To {this.state.isSignUp ? "SignIn" : "SignUp"}
+                  </i>
+                  {this.state.isSignUp ? null : (
+                    <NavLink to="/ResetPassword">
+                      <i className="fa fa-unlock-alt"></i> Reset Password
+                    </NavLink>
+                  )}
+                  &nbsp;&nbsp;{" "}
                 </div>
-                    {/* SignUp/SignIn Flip cards*/}
-                {/* <div className={["flip-card-inner", classes.flipcardinner].join(' ')}> */}
-                    {/* <div className={["flip-card-front", classes.flipcardfront].join(' ')}>
-                        <img src={signup} alt="Signup" />
-                    </div> */}
-                    {/* <div className={["flip-card-back", classes.flipcardback].join(' ')}> */}
-                    
-                        <form onSubmit={this.submitHandler}>
-                            <h2>{this.state.isSignUp ? "SignUp" : "SignIn"}</h2>
-                            {errorMessage}
-                            {form}
-                            <div>
-                                <button className={classes.myBtn}>
-                                    {this.state.isSignUp ? ("SignUp"):(<i className="fa fa-envelope"> SignIn With Email</i>)}
-                                </button>
-                            </div>
-                            <br />
-                            <div>
-                                {this.state.isSignUp ? ("") : (
-                                    <button className={classes.myBtn} onClick={this.GoogleAuth}>
-                                        <i className="fa fa-google "> Login With Google</i>
-                                    </button>
-                                )}
-                            </div>
-                            <p style={{ fontSize: "10px", textAlign: "center" }}>
-                                {this.state.isSignUp ? "By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy.": null}
-                            </p>
-                        </form>
-                        <i onClick={this.switchToLogin} style={{ textDecoration: "underline", marginRight: "21px" }}>
-                            Switch To {this.state.isSignUp ? "SignIn" : "SignUp"}
-                        </i>
-                        {this.state.isSignUp ? null : ( <NavLink to="/ResetPassword"><i className="fa fa-unlock-alt"></i> Reset Password</NavLink>)}
-                        &nbsp;&nbsp;{" "}
-                    {/* </div> */}
-                {/* </div> */}
-                </div>
-            </Aux>
+              </div>
+            </div>
+          </Aux>
         );
     }
 }

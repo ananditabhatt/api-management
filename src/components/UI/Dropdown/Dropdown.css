@@ -1,0 +1,12 @@
+.Dropdown{
+max-width: 70px;
+margin-left: auto;
+}
+
+.Dropdown ul{
+    width: 20px;
+    color: black;
+}
+.Dropdown input{
+    border-bottom-color: transparent;
+}

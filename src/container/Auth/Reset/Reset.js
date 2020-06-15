@@ -1,15 +1,15 @@
 import React,{Component} from 'react';
-import * as actionCreators from '../../../store/actions/index';
+import * as actionCreators from '../../../store/actions/actionCreators';
 import {connect} from 'react-redux'
 import {Redirect,NavLink} from 'react-router-dom';
 
-import Button from '../../../Components/UI/Button/Button';
-import Spinner from '../../../Components/UI/Spinner/Spinner';
+import Button from '../../../components/UI/Button/Button';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './Reset.css'
-import WithErrorHanlder from '../../../Components/Hoc/WithErrorHandler/WithErrorHandler';
-import axiosOrder from '../../../axios-order';
-import Input from '../../../Components/UI/Input/Input';
-import reset from "../../../Assets/Images/reset.gif";
+import WithErrorHanlder from '../../../hoc/WithErrorHandler/WithErrorHandler';
+import axios from '../../../axios-users';
+import Input from '../../../components/UI/Input/Input';
+
 class Reset extends Component{
     state = {
         controls: {
@@ -146,11 +146,11 @@ render(){
         <div className={classes.Reset}>
      
          <form onSubmit={this.submitHandler}>
-         <h2>Reset Account Password</h2>
+         <h2>Reset  Password</h2>
            {form}
            {errorMessage}
-          {this.props.isReset?<img src={reset}/>:null} 
-          { this.props.isReset?null:<Button btnType="Success" >Reset Your Password</Button>}          
+      {/*     {this.props.isReset?<img src={reset}/>:null}  */}
+          { this.props.isReset?null:<button className={classes.myButton} >Reset Your Password</button>}          
 {/*            <p style={{fontSize:"10px",textAlign:"left"}}>{this.state.isSignUp ? "By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy. You may receive SMS notifications from us and can opt out at any time." : null}</p>
  */}           
          </form>
@@ -180,4 +180,4 @@ const mapDispatchToProps=(dispatch)=>{
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(WithErrorHanlder(Reset,axiosOrder));
+export default connect(mapStateToProps,mapDispatchToProps)(WithErrorHanlder(Reset,axios));

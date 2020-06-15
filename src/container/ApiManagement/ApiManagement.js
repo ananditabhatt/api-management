@@ -3,11 +3,13 @@ import KeyGenerator from '../../components/KeyGenerator/KeyGenerator';
 import { APIGateway, S3 } from 'aws-sdk';
 import ApiData from '../../components/ApiData/ApiData';
 import { connect } from 'react-redux';
+import loginBackground from "../../assets/Login.mp4";
+import classes from './ApiManagement.css';
 import * as actionCreators from '../../store/actions/actionCreators';
-import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import axios from '../../axios-users';
+import SuccessModal from '../../components/SuccessModal/SuccessModal'
 
 const DEFAULT_ROLE = 'user';
 const apigateway = new APIGateway({
@@ -17,8 +19,8 @@ const apigateway = new APIGateway({
 });
 
 const ApiManagement = props => {
-    const [elements, setElement] = useState({
-        name: {
+    const [keyGeneratorElements, setKeyGeneratorElement] = useState({
+        keyGeneratorName: {
             elementType: 'input',
             elementConfig: {
                 type: 'text',
@@ -30,32 +32,42 @@ const ApiManagement = props => {
             },
             valid: false
         }
-        // },
-        // name: {
-        //     elementType: 'input',
-        //     elementConfig: {
-        //         type: 'text',
-        //         placeholder: 'Name'
-        //     },
-        //     value: '',
-        //     validation: {
-        //         required: true
-        //     },
-        //     valid: false
-        // }
     });
+
+    const [scopetable, populateScopeTable] = useState(null);
+    const [deleteAPIWarning, populateDeleteAPIWarning] = useState(null);
+    const [editModalData, populateEditModal] = useState(null);
     const [successModal, showSuccessModal] = useState(false);
+    const [tempToggleState, changeTempToggleState] = useState(false);
+    const [tempApiName, changeTempApiName] = useState('');
+    const [deleteWarningModal, showDeleteWarningModal] = useState(false);
+    const [editModal, showEditModal] = useState(false);
+    const [scopeModal, showScopeModal] = useState(false);
+    const [showSpinnerForContent, toggleShowSpinnerForContent] = useState(false);
+    const [errorModal, showErrorModal] = useState(false);
+    const [isSuperUser, setIsSuperUser] = useState(false);
+    const [showSecret, setShowSecret] = useState(false);
 
     useEffect(() => {
+        console.log("FIRST USE EFFECT CALLED props: ", props);
         props.onGetUserData();
         props.onGetRoles();
+        props.getUserProfile(props.userId);
     }, []);
 
-    let elementArray = [];
-    for (let key in elements) {
-        elementArray.push({
+    const { profileInfo } = props;
+    useEffect(() => {
+        console.log("SECOND USE EFFECT CALLED props: ", props);
+        if (props.profileInfo) {
+            setIsSuperUser(props.profileInfo.role == 'superuser');
+        }
+      }, profileInfo);
+
+    let keyGeneratorElementArray = [];
+    for (let key in keyGeneratorElements) {
+        keyGeneratorElementArray.push({
             id: key,
-            config: elements[key]
+            config: keyGeneratorElements[key]
         });
     }
 
@@ -63,10 +75,12 @@ const ApiManagement = props => {
         var params = {
             apiKey: key
         };
+        toggleShowSpinnerForContent(true);
         apigateway.deleteApiKey(params, function (err, data) {
             if (err) {
                 console.log("Error occured!");
                 console.log(err, err.stack);
+                toggleShowSpinnerForContent(false);
             }
             else {
                 Object.keys(props.apiData).map(keys => {
@@ -78,6 +92,7 @@ const ApiManagement = props => {
                         }
                     }
                 });
+                toggleShowSpinnerForContent(false);
             }
         });
     }
@@ -137,7 +152,6 @@ const ApiManagement = props => {
     }
 
     const updateAWSApiName = (data) => {
-        data.name = "ANAV_123";
         let params = {
             apiKey: data.client_id,
             patchOperations: [
@@ -147,8 +161,15 @@ const ApiManagement = props => {
                     path: '/name',
                     value: data.name
                 },
+                {
+                    from: '',
+                    op: 'replace',
+                    path: '/enabled',
+                    value: data.enabled ? 'true' : 'false'
+                }
             ]
         };
+        toggleShowSpinnerForContent(true);
         apigateway.updateApiKey(params, function (err, data) {
             if (err) { console.log(err, err.stack); }// an error occurred
             else {
@@ -169,7 +190,7 @@ const ApiManagement = props => {
                     "createdDate": data['createdDate'],
                     "client_id": data['id'],
                     "role": DEFAULT_ROLE,
-                    "enabled": true,
+                    "enabled": data['enabled'],
                     "scope": {
                         "events": {
                             read: true,
@@ -186,13 +207,14 @@ const ApiManagement = props => {
                     "name": data['name']
                 };
                 props.onUpdateUserData(jsonData, key);
+                toggleShowSpinnerForContent(false);
             }
         });
     }
 
     const generateAWSApiKey = (event) => {
         event.preventDefault()
-        if (!elements.name.valid) {
+        if (!keyGeneratorElements.keyGeneratorName.valid) {
             alert("INVALID!");
             return;
 
@@ -200,7 +222,7 @@ const ApiManagement = props => {
         var params = {
             description: 'Created by : ',
             enabled: true,
-            name: elements.name.value
+            name: keyGeneratorElements.keyGeneratorName.value
         };
 
         apigateway.createApiKey(params, function (err, data) {
@@ -228,7 +250,7 @@ const ApiManagement = props => {
                     "value": data['value'],
                     "lastUpdatedDate": data['lastUpdatedDate'],
                     "userName": "annie",
-                    "name": elements.name.value
+                    "name": keyGeneratorElements.keyGeneratorName.value
                 };
                 props.onPostUserData(jsonData);
             }
@@ -245,41 +267,69 @@ const ApiManagement = props => {
     }
 
     const inputChangeListner = (event, id) => {
-        const updatedElements = { ...elements };
-        const updatedElement = { ...updatedElements[id] };
-        updatedElement.value = event.target.value;
-        updatedElement.valid = checkValidity(updatedElement.value, updatedElement.validation)
-        updatedElements[id] = updatedElement;
-        let formISValid = true;
-        for (let id in updatedElements) {
-            formISValid = updatedElements[id].valid && formISValid
+        console.log("input changelistner : ", id);
+        switch (id) {
+            case 'keyGeneratorName':
+                const updatedElements = { ...keyGeneratorElements };
+                const updatedElement = { ...updatedElements[id] };
+                updatedElement.value = event.target.value;
+                updatedElement.valid = checkValidity(updatedElement.value, updatedElement.validation)
+                updatedElements[id] = updatedElement;
+                let formISValid = true;
+                for (let id in updatedElements) {
+                    formISValid = updatedElements[id].valid && formISValid
+                }
+                setKeyGeneratorElement(updatedElements);
+                break;
+            default:
+                return null;
         }
-        setElement(updatedElements);
     }
-
-    console.log("apiData  in API MANAGEMENT", props.apiData);
-    
-
+    console.log('isSuperUser IN API MANAGEMENT ', isSuperUser);
     return (
         <div>
-            {/* <Parallax /> */}
-            <KeyGenerator
-                elementArray={elementArray}
-                generateAWSApiKey={generateAWSApiKey}
-                inputChangeListner={inputChangeListner} />
-            <Modal modalClosed={() => { showSuccessModal(false) }} show={successModal}>
-                <i style={{ color: 'green' }} className="large material-icons">done_all</i>
-                <span>API Key was successfully generated!</span>
-                <div><i className="small material-icons">file_download</i></div>
-            </Modal>
-            {props.apiData ? <ApiData
-                deletAWSApiKey={(data) => deletAWSApiKey(data)}
-                toggleAWSApiKey={(data) => toggleAWSApiKey(data)}
-                updateAWSApiName={(data) => updateAWSApiName(data)}
-                apiData={props.apiData}
-                elementArray={elementArray}
-                inputChangeListner={inputChangeListner}
-                roles={props.roles} /> : <Spinner />}
+            <video
+                className={classes.myVideo}
+                loop
+                autoplay="autoplay"
+                id="myVideo">
+                <source src={loginBackground} type="video/mp4" />
+              Your browser does not support HTML5 video.
+            </video>
+            <div className={classes.content}>
+                <KeyGenerator
+                    keyGeneratorElementArray={keyGeneratorElementArray}
+                    generateAWSApiKey={generateAWSApiKey}
+                    inputChangeListner={inputChangeListner} />
+               <SuccessModal showSuccessModal={showSuccessModal} successModal={successModal}/>
+                {(props.apiData && !showSpinnerForContent)? <ApiData
+                    deletAWSApiKey={(data) => deletAWSApiKey(data)}
+                    toggleAWSApiKey={(data) => toggleAWSApiKey(data)}
+                    updateAWSApiName={(data) => updateAWSApiName(data)}
+                    apiData={props.apiData}
+                    scopeModal={scopeModal}
+                    scopetable={scopetable}
+                    populateScopeTableHandler={(data) => { populateScopeTable(data); showScopeModal(true); }}
+                    showScopeModal={showScopeModal}
+                    editModal={editModal}
+                    showEditModal={showEditModal}
+                    deleteWarningModal={deleteWarningModal}
+                    showDeleteWarningModal={showDeleteWarningModal}
+                    populateDeleteAPIWarning={(data) => { populateDeleteAPIWarning(data); showDeleteWarningModal(true); }}
+                    populateEditModal={(data) => { populateEditModal(data); showEditModal(true); }}
+                    editModalData={editModalData}
+                    deleteAPIWarning={deleteAPIWarning}
+                    tempToggleState={tempToggleState}
+                    changeTempToggleState={changeTempToggleState}
+                    tempApiName={tempApiName}
+                    changeTempApiName={changeTempApiName}
+                    showSpinnerForContent={showSpinnerForContent}
+                    toggleShowSpinnerForContent={toggleShowSpinnerForContent}
+                    isSuperUser={isSuperUser}
+                    showSecret={showSecret}
+                    setShowSecret={setShowSecret}
+                    roles={props.roles} /> : <Spinner />}
+            </div>
         </div>
     );
 
@@ -287,6 +337,8 @@ const ApiManagement = props => {
 const mapDispatchToState = state => {
     return {
         apiData: state.manageUsersReducer.apiData,
+        profileInfo: state.profilesReducer.profileInfo,
+        userId: state.auth.userId
         // roles: state.rbacReducer.roles
     };
 }
@@ -294,6 +346,7 @@ const mapDispatchToState = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onGetUserData: () => dispatch(actionCreators.getUserData()),
+        getUserProfile: (userId) => dispatch(actionCreators.getUserProfile(userId)),
         onGetRoles: () => dispatch(actionCreators.getRoles()),
         onDeleteUserData: (userId) => dispatch(actionCreators.deleteUserData(userId)),
         onUpdateUserData: (userData, key) => dispatch(actionCreators.updateUserData(userData, key)),

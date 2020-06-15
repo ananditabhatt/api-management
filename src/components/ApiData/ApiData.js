@@ -1,63 +1,82 @@
 import React, { useEffect } from 'react';
 import M from 'materialize-css';
 import Modal from '../UI/Modal/Modal';
-import Input from '../UI/Input/Input'
+import ScopeTable from './ScopeTable/ScopeTable'
+import UpdateApiCard from './UpdateApiCard/UpdateApiCard';
+import CollapsibleHeader from './CollapsibleHeader/CollapsibleHeader';
+import CollapsibleBody from './CollapsibleBody/CollapsibleBody';
+import DeleteWarningModal from './DeleteWarningModal/DeleteWarningModal';
 
 const apiData = props => {
 
+    const textFieldsCollapsiblebodyObj = {
+        'client_id': 'Client ID',
+        'value': 'Secret',
+        'lastUpdatedDate': 'Last Modified',
+    };
+    const btnsCollapsibleObject = [
+        { id: 'Scope', handler: 'getScopeTable' },
+        { id: 'edit', handler: 'handleEditRequest' },
+        { id: 'delete', handler: 'handleDeleteRequest' }];
+
     useEffect(() => {
         M.Collapsible.init(this.Collapsible4);
-        //let elems = document.querySelectorAll('select');
         M.FormSelect.init(document.querySelectorAll('select'), {});
-        M.updateTextFields();
     }, []);
+    
+    //Scope Modal.
+    const getScopeTable = (details) => {
+        console.log("The details are : ", details);
+        const tableData = (<ScopeTable details={details}/>);
+        props.populateScopeTableHandler(tableData);
+    };
 
-    const warningPopUp = data => {
-        console.log("data : ", data)
-        return (<Modal show={true} modalClosed={() => { deleteHandler(data) }}>Would you like to delete {data.name} ? </Modal>);
+    // CollapsibleBody Section.
+    const getCollapsibleBody = details => {
+        let collapsibleBodyObject = {};
+        if (props.apiData != undefined) {
+            for (let keys in textFieldsCollapsiblebodyObj) {
+                collapsibleBodyObject[textFieldsCollapsiblebodyObj[keys]] = details[keys];
+            }}
+        return <CollapsibleBody
+            details={details}
+            showSecret={props.showSecret}
+            setShowSecret={props.setShowSecret}
+            isSuperUser={props.isSuperUser}
+            handleEditRequest={(details) => handleEditRequest(details)}
+            handleDeleteRequest={(details) => handleDeleteRequest(details)}
+            getScopeTable={(details) => getScopeTable(details)}
+            content={collapsibleBodyObject}
+            buttons={btnsCollapsibleObject} />;
     }
-    const deleteHandler = (data) => {
-        console.log("deleteHandler data", data)
-        props.deletAWSApiKey(data.client_id)
+    //Delete Api warning
+    const handleDeleteRequest = details => {
+        let dataModal = (
+            <DeleteWarningModal
+                details={details}
+                deletAWSApiKey={(id) => props.deletAWSApiKey(id)}
+                showDeleteWarningModal={props.showDeleteWarningModal}
+            />
+        )
+        props.populateDeleteAPIWarning(dataModal)
+    }
+    //Edit Api card.
+    const handleEditRequest = details => {
+        let updateModal = (
+            <UpdateApiCard
+                updateApiCardSaveHandler={updateApiCardSaveHandler}
+                showEditModal={props.showEditModal}
+                data={details} />
+        )
+        props.populateEditModal(updateModal);
+    }
+    const updateApiCardSaveHandler = (details) => {
+        console.log("data in updateApiCardSaveHandler ", details);
+        let updatedData = { ...details }
+        props.updateAWSApiName(updatedData);
     }
 
-    const UpdateNameHandler = (data) => {
-        console.log("UpdateHandler data", data)
-        props.updateAWSApiName(data);
-    }
-    const updateNewName = (event) => {
-        console.log("event value", event.target.value);
-
-    }
-
-    const toggleApiHandler = (data) => {
-        console.log("UpdateHandler data", data)
-        let toggledData = { ...data };
-        toggledData.enabled = !data.enabled;
-        props.toggleAWSApiKey(toggledData);
-    }
-
-    const scopeTable = (details) => {
-        let data = [];
-        if (details != undefined) {
-            console.log("details ", details);
-            Object.keys(details.scope).map((scopeType) => {
-                console.log("scopeType : ", scopeType);
-                data.push(
-                    <tr key={scopeType}>
-                        <td>{scopeType}</td>
-                        <td>{details.scope[scopeType].read ?
-                            <i className="material-icons">check</i> :
-                            <i className="material-icons">clear</i>}</td>
-                        <td>{details.scope[scopeType].write ?
-                            <i className="material-icons">check</i> :
-                            <i className="material-icons">clear</i>}</td>
-                    </tr>);
-            });
-            return data;
-        }
-    }
-
+    // formating Api data to an array to create structure.
     let dataArray = [];
     if (props.apiData != undefined) {
         Object.keys(props.apiData).map((userInfo) => {
@@ -71,115 +90,31 @@ const apiData = props => {
             };
         });
     }
-
-    const getScopeTable = (data) => (
-        <table>
-            <thead>
-                <tr>
-                    <th>Scope</th>
-                    <th>Read</th>
-                    <th>Write</th>
-                </tr>
-            </thead>
-            <tbody>
-                {scopeTable(data.details)}
-            </tbody>
-        </table>
-    );
-
+    // Api Data Structure
     const structure = dataArray.map(data => {
-        console.log("data : ", data);
         return (
             <li key={data.id}>
-                <div className="collapsible-header">
-                    <i className="material-icons">arrow_drop_down</i>
-                    <div className="col s3"><span>{data.details.name}</span></div>
-                    <div className="col s3"><span>{data.details.client_id} </span></div>
-                    <div className="col s3"><span>{data.details.role} </span></div>
-                    {data.details.enabled ? <a onClick={() => { toggleApiHandler(data.details) }} className="btn-floating btn-small waves-effect waves-light green"><i className="material-icons">check</i></a> :
-                        <a onClick={() => { toggleApiHandler(data.details) }} className="btn-floating btn-small waves-effect waves-light red"><i className="material-icons">close</i></a>}
+                <div>
+                    {<CollapsibleHeader name={data.details.name} enabled={data.details.enabled} />}
                 </div>
                 <div className="collapsible-body">
-                    <a onClick={() => { deleteHandler(data.details) }} className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">delete</i></a>
-                    <a onClick={() => { UpdateNameHandler(data.details) }} className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">save</i></a>
-                    <div className="row">
-                        <div className="col s6">s
-                            <div className="section">
-                                <div className="row">
-                                    <div className="input-field col s6">
-                                        <input disabled value={data.details.client_id} type="text" className="validate" />
-                                        <label>Client Id :</label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="input-field col s6">
-                                        {props.elementArray.map(element => (
-                                            <Input
-                                                key={element.id}
-                                                elementType={element.config.elementType}
-                                                elementConfig={element.config.elementConfig}
-                                                value={element.config.value}
-                                                invalid={!element.config.valid}
-                                                touched={element.config.touched}
-                                                // ShouldValidate={element.config.validation}
-                                                changed={(event) => { props.inputChangeListner(event, element.id) }}
-                                            />))}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="input-field col s6">
-                                        <input disabled value={data.details.value} id="disabled" type="text" className="validate" />
-                                        <label>Secret :</label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="input-field col s6">
-                                        <select>
-                                            <option selected={data.details.enabled} value="true">true</option>
-                                            <option selected={!data.details.enabled} value="false">false</option>
-                                        </select>
-                                        <label>Enabled</label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="input-field col s6">
-                                        <input disabled value={data.details.lastUpdatedDate} id="disabled" type="text" className="validate" />
-                                        <label>Last Updated Date Id :</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s6">
-                            <div className="section">
-                                {getScopeTable(data)}
-                            </div>
-                        </div>
-                    </div>
+                    {getCollapsibleBody(data.details)}
                 </div>
             </li>);
     });
 
     return (
         <div className="container">
-            <div className="row">
-                {/* <nav>
-                    <div className="nav-wrapper">
-                        <ul>
-                        <li className="col s3 ">Name</li>
-                        <li className="col s5" >Client ID</li>
-                        <li className="col s4">Role</li>
-                        </ul>
-                    </div>
-                </nav> */}
-                <ul ref={Collapsible => { this.Collapsible4 = Collapsible; }}
-                    className="collapsible popout">
-                    <div style={{ width: '93%', marginLeft: '44px' }} className="collapsible-header">
-                        <div className="col s3"><span>Name</span></div>
-                        <div className="col s3"><span>Client ID</span></div>
-                        <div className="col s3"><span>Client ID </span></div>
-                    </div>
-                    {structure}
-                </ul>
+            <div>
+                <Modal modalClosed={() => props.showScopeModal(false)} show={props.scopeModal}>{props.scopetable}</Modal>
+                <Modal modalClosed={() => props.showEditModal(false)} show={props.editModal}>{props.editModalData}</Modal>
+                <Modal modalClosed={() => props.showDeleteWarningModal(false)} show={props.deleteWarningModal}>{props.deleteAPIWarning}</Modal>
+                <div className="row">
+                    <ul ref={Collapsible => { this.Collapsible4 = Collapsible; }}
+                        className="collapsible popout">
+                        {structure}
+                    </ul>
+                </div>
             </div>
         </div>
     );

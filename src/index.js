@@ -8,13 +8,15 @@ import rbacReducer from './store/reducer/rbacReducer';
 import auth from './store/reducer/authReducer'
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import profilesReducer from './store/reducer/profilesReducer';
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import  thunk  from 'redux-thunk'
 
 const reducer = combineReducers({
     manageUsersReducer: manageUsersReducer,
     rbacReducer: rbacReducer,
-    auth:auth
+    auth:auth,
+    profilesReducer:profilesReducer
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));

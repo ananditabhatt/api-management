@@ -13,7 +13,7 @@ const authStart = (state, action) => {
     return updateObject(state, { error: null, spinner: true });
 }
 const authSuccess = (state, action) => {
-    return updateObject(state, { error: null, spinner: false, token: action.idToken, userId: action.userId });
+    return updateObject(state, { error: null, spinner: false, token: action.idToken, userId: action.userId, email: action.email });
 }
 
 const authFailure = (state, action) => {

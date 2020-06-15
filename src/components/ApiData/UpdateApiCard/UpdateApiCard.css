@@ -1,0 +1,22 @@
+.InputTextField{
+    width: 100%;
+}
+
+.DelBtns{
+    display: flex;
+    margin-left: 64%;
+    }
+
+.CardContainer{
+    width: 300px;
+}
+
+.CardTtitle {
+    font-size: 24px;
+    height: 55px;
+    padding: 5px 0px 0px 0px;
+    font-weight: 300;
+}
+.Label {
+    color: #1b1818;
+}

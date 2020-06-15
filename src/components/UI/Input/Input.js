@@ -12,7 +12,7 @@ const Input = (props) => {
 
     switch (props.elementType) {
         case ('input'):
-            inputElement = <input className='validate'
+            inputElement = <input defaultValue={props.defaultValue} className='validate'
                 {...props.elementConfig}
                 onChange={props.changed}
                 value={props.value} />
