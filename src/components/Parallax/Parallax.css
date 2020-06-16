@@ -1,0 +1,11 @@
+.Parallax{
+    position: inherit;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.Shadow{
+    background-color:#00000085;
+    z-index: 0;
+    position: inherit;
+}

@@ -1,18 +1,16 @@
 .Header {
-    width: 99%;
+    width: 100%;
     position: absolute;
-    /* text-align: right; */
-    /* top: -50px; */
-    bottom: 85vh;
+    bottom: 86vh;
+    height: 15vh;
     left: 1px;
-    /* background-color: #703B09; */
-    
+    background-color: #432720f2;
     -ms-flex-pack: justify;
     justify-content: space-between;
     -ms-flex-align: center;
     align-items: unset;
-    /* padding: 0 20px; */
-    /* -webkit-box-sizing: border-box; */
+    -webkit-box-sizing: border-box;
+    transition: all linear 0.2s;
     box-sizing: border-box;
     z-index: 90;
 }

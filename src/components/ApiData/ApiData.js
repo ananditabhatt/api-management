@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import M from 'materialize-css';
+import classes from './ApiData.css';
 import Modal from '../UI/Modal/Modal';
 import ScopeTable from './ScopeTable/ScopeTable'
 import UpdateApiCard from './UpdateApiCard/UpdateApiCard';
@@ -79,13 +80,13 @@ const apiData = props => {
 
     // formating Api data to an array to create structure.
     let dataArray = [];
-    console.log("api data OUTSIDE AAAAA: ",props.apiData);
+    console.log("api data OUTSIDE AAAAA: ", props.apiData);
     if (props.apiData != undefined && props.apiData != null) {
-        console.log("api data INSIDE AAAAA: ",props.apiData);
+        console.log("api data INSIDE AAAAA: ", props.apiData);
         Object.keys(props.apiData).map((userInfo) => {
             console.log("userInfo : ", props.apiData[userInfo]);
             for (let key in props.apiData[userInfo]) {
-                console.log("props.apiData[userInfo][key].userId  ",props.profileInfo.userId);
+                console.log("props.apiData[userInfo][key].userId  ", props.profileInfo.userId);
                 console.log("props.profileInfo : ", props.profileInfo);
                 if (props.apiData[userInfo][key].userId === props.profileInfo.userId) {
                     console.log("INTERNAL IF ");
@@ -101,7 +102,7 @@ const apiData = props => {
                 }
             }
         });
-    }console.log("dataarray AAAAA: ",dataArray);
+    } console.log("dataarray AAAAA: ", dataArray);
     // Api Data Structure
     const structure = dataArray.map(data => {
         return (
@@ -109,24 +110,22 @@ const apiData = props => {
                 <div>
                     {<CollapsibleHeader name={data.details.name} enabled={data.details.enabled} />}
                 </div>
-                <div className="collapsible-body">
+                <div style={{padding:'1rem'}} className="collapsible-body">
                     {getCollapsibleBody(data.details)}
                 </div>
             </li>);
     });
 
     return (
-        <div className="container">
-            <div>
-                <Modal modalClosed={() => props.showScopeModal(false)} show={props.scopeModal}>{props.scopetable}</Modal>
-                <Modal modalClosed={() => props.showEditModal(false)} show={props.editModal}>{props.editModalData}</Modal>
-                <Modal modalClosed={() => props.showDeleteWarningModal(false)} show={props.deleteWarningModal}>{props.deleteAPIWarning}</Modal>
-                <div className="row">
-                    <ul ref={Collapsible => { this.Collapsible4 = Collapsible; }}
-                        className="collapsible popout">
-                        {structure}
-                    </ul>
-                </div>
+        <div>
+            <Modal modalClosed={() => props.showScopeModal(false)} show={props.scopeModal}>{props.scopetable}</Modal>
+            <Modal modalClosed={() => props.showEditModal(false)} show={props.editModal}>{props.editModalData}</Modal>
+            <Modal modalClosed={() => props.showDeleteWarningModal(false)} show={props.deleteWarningModal}>{props.deleteAPIWarning}</Modal>
+            <div className={classes.Container}>
+                <ul ref={Collapsible => { this.Collapsible4 = Collapsible; }}
+                    className="collapsible popout" style={{marginTop:'5vh'}} > 
+                    {structure}
+                </ul>
             </div>
         </div>
     );

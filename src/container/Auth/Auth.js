@@ -176,7 +176,7 @@ class Auth extends Component {
           <Aux>
             {autoReditect}
             background video component with autoplay and mute*/}
-             <video
+             {/* <video
               className={classes.myVideo}Î
               loop
               autoplay="autoplay"
@@ -184,7 +184,7 @@ class Auth extends Component {
             >
               <source src={loginBackground} type="video/mp4" />
               Your browser does not support HTML5 video.
-            </video>
+            </video> */}
             {/* Footer Telstra T22 Content */}
 
             <div className={classes.contentlogin}>

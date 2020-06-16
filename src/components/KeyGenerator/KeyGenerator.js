@@ -44,6 +44,9 @@ const KeyGenerator = props => {
 
     return (
         <div className={classes.KeyGenerator}>
+            <div className={classes.Title}><h3>Welcome to TelstraDev</h3></div>
+            <div className={classes.TitleText}><p>We're leading <strong>API and service management platform</strong> that's always thriving to improve and expand.</p></div>
+            <div className={classes.TitleKey}><h5><strong>Generate New API Key</strong></h5></div>
             <form onSubmit={(event) => { props.generateAWSApiKeyHandler(event) }}>
                 {keyGeneratorElementArray.map(element => (
                     <Input
@@ -57,7 +60,7 @@ const KeyGenerator = props => {
                         changed={(event) => { inputChangeListner(event, element.id) }}
                     />)
                 )}
-                <CustomButton  clicked={(event) => { props.generateAWSApiKeyHandler(event) }} classes={classes.btn}>&nbsp;&nbsp;Generate New API Key&nbsp;&nbsp;</CustomButton>
+                <CustomButton  clicked={(event) => { props.generateAWSApiKeyHandler(event) }} classes={classes.btn}><span>Generate</span></CustomButton>
             </form>
         </div>
     );

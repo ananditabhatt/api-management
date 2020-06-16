@@ -11,10 +11,12 @@ class Layout extends Component {
         return (
             <Aux>
                 <Header isAuthenticated={this.props.isAuthenticated} userId={this.props.userId} email={this.props.email} />
+                {/* //<Parallax> */}
                 <main>
                     {this.props.children}
                 </main>
-                {/* <Parallax /> */}
+                
+                {/* </Parallax> */}
             </Aux>
         );
     }

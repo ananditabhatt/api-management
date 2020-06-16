@@ -1,46 +1,67 @@
 .KeyGenerator{
-    margin: 100px auto;
-    width: 80%;
-    text-align: center;
-    height: 20vh;
-    box-shadow: 0 2px 3px #f5f5f547;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-@media (min-width: 600px) {
-    .KeyGenerator{
-        width: 500px;
-    }
-}
-
-.btn{
-    color: whitesmoke;
-    background-color: #f5f5f547;
-    border-radius: 12px;
-    height: 7vh;
-    transition-duration: 0.4s;
-    width: 37vh;
-    overflow: hidden;
-    cursor: pointer;
-
-}
-.btn :after {
-    content: "";
-    background-color: #827e7ead;
-    display: block;
+    width: 500px;
+    top: 22vh;
+    left: 65vh;
     position: absolute;
-    padding-top: 300%;
-    padding-left: 350%;
-    margin-left: -20px!important;
-    margin-top: -120%;
-    opacity: 0;
-    transition: all 0.8s
+    text-align: center;
+    height: 23vh;
+    padding: 20px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 42px;
+}
+.TitleText{
+    color: white;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+.Title{
+    color: white;
+    font-size: 22px;
+}
+.TitleKey{
+    color: white;
+    font-size: 22px;
+    margin-top: 15vh;
+    margin-bottom: 4vh;
+}
+  .btn {
+    border-radius: 4vh;
+    background-color: #402720;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 20px;
+    padding: 1vh;
+    width: 18vh;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 24px;
   }
   
-  .btn :active :after {
-    padding: 0;
-    margin: 0;
+  .btn span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .btn span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .btn:hover span {
+    padding-right: 25px !important; 
+  }
+  
+  .btn:hover span:after {
     opacity: 1;
-    transition: 0s
+    right: 0;
   }
