@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import KeyGenerator from '../../components/KeyGenerator/KeyGenerator';
 import img from '../../assets/background.jpg';
-import { Parallax } from 'react-parallax';
+import {Parallax }from 'react-parallax';
 import ApiData from '../../components/ApiData/ApiData';
 import { connect } from 'react-redux';
 import loginBackground from "../../assets/Login.mp4";
@@ -44,6 +44,9 @@ const ApiManagement = props => {
     });
 
     useEffect(() => {
+        console.log("FIRST USE EFFECT CALLED props: ", props);
+        props.onGetUserData();
+        props.onGetRoles();
         props.getUserProfile(props.userId);
     }, []);
 
@@ -79,13 +82,12 @@ const ApiManagement = props => {
             </video>
             <div className={classes.content}>
                 <Modal modalClosed={() => setErrorModal('')} show={errorModal}><ErrorModal error={errorModal} /></Modal>
-                <div style={{ height: '12vh' }}></div>
-                <KeyGenerator
-                    keyGeneratorElements={keyGeneratorElements}
-                    setKeyGeneratorElement={setKeyGeneratorElement}
-                    generateAWSApiKeyHandler={generateAWSApiKeyHandler} />
-                <div style={{ height: '12vh' }}></div>
-                {(props.apiData != null && !showSpinnerForContent && props.profileInfo) ? <ApiData
+                    <KeyGenerator
+                        keyGeneratorElements={keyGeneratorElements}
+                        setKeyGeneratorElement={setKeyGeneratorElement}
+                        generateAWSApiKeyHandler={generateAWSApiKeyHandler} />
+                <SuccessModal showSuccessModal={showSuccessModal} successModal={successModal} />
+                {(props.apiData && !showSpinnerForContent && props.profileInfo) ? <ApiData
                     deletAWSApiKeyHandler={(data) => deletAWSApiKeyHandler(data)}
                     updateAWSApiHandler={(data) => updateAWSApiHandler(data)}
                     apiData={props.apiData}
@@ -108,7 +110,6 @@ const ApiManagement = props => {
                     setShowSecret={setShowSecret}
                     profileInfo={props.profileInfo}
                     roles={props.roles} /> : <Spinner />}
-                <div style={{ height: '50vh' }}></div>
             </div>
         </div>
     );
