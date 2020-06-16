@@ -6,11 +6,23 @@ let initialState = {
     userId: null,
     error: null,
     spinner: null,
-    email: null
+    email: null,
+    apiData: null,
+    profileInfo: null,
+    isSuperUser: null
 };
 
 const authStart = (state, action) => {
-    return updateObject(state, { error: null, spinner: true });
+    return updateObject(state, {
+        token: null,
+        userId: null,
+        error: null,
+        email: null,
+        apiData: null,
+        profileInfo: null,
+        isSuperUser: null,
+        spinner: true
+    });
 }
 const authSuccess = (state, action) => {
     return updateObject(state, { error: null, spinner: false, token: action.idToken, userId: action.userId, email: action.email });
@@ -21,7 +33,16 @@ const authFailure = (state, action) => {
 }
 
 const authLogout = (state, action) => {
-    return updateObject(state, { token: null, userId: null });
+    return updateObject(state, {
+        token: null,
+        userId: null,
+        error: null,
+        email: null,
+        apiData: null,
+        profileInfo: null,
+        isSuperUser: null,
+        spinner: false
+    });
 }
 
 const authReset_Start = (state, action) => {

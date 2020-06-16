@@ -19,9 +19,10 @@ const profilesReducer = (state = initialState, action) => {
                 ...state
             };
         case actionTypes.ADD_PROFILE_API_CALL_SUCCESS:
-            console.log("ADD_PROFILE_API_CALL_SUCCESS");
+            console.log("ADD_PROFILE_API_CALL_SUCCESS", action.data);
             return {
-                ...state
+                ...state,
+                profileInfo: action.data,
             };
         case actionTypes.GET_PROFILE_API_CALL_START:
             console.log("GET_PROFILE_API_CALL_START");
@@ -33,13 +34,18 @@ const profilesReducer = (state = initialState, action) => {
             return {
                 ...state
             };
+        case actionTypes.CLEAR_PROFILE_DATA:
+            console.log("CLEAR_PROFILE_DATA");
+            return {
+                state: { ...initialState }
+            };
         case actionTypes.GET_PROFILE_API_CALL_SUCCESS:
             console.log("GET_PROFILE_API_CALL_SUCCESS", action.data);
-                console.log("ACTION DATA IN REDUCER : ",action.data);
-                let isSuperUser = false;
-                if(action.data.role && action.data.role === 'superuser'){
-                    isSuperUser = true
-                }
+            console.log("ACTION DATA IN REDUCER : ", action.data);
+            let isSuperUser = false;
+            if (action.data.role && action.data.role === 'superuser') {
+                isSuperUser = true
+            }
             return {
                 ...state,
                 profileInfo: action.data,

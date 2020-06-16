@@ -1,7 +1,8 @@
 import * as actionTypes from "./constants";
 import axios from '../../axios-users';
 import firebase from "firebase";
-import { addUserProfile } from './profilesAction';
+import { addUserProfile, clearProfileData } from './profilesAction';
+import { clearAPIdata } from "./manageUsersAction";
 
 
 export const authStart = () => {
@@ -27,7 +28,17 @@ export const authFailure = (error) => {
 }
 
 export const AC_authLogout = () => {
+    return (dispatch) => {
+        dispatch(clearProfileData());
+        dispatch(clearAPIdata());
+        dispatch(AC_authClearLocalStorage());
+    }
+    
+}
+
+export const AC_authClearLocalStorage = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
     localStorage.removeItem('ExpirationDate');
     localStorage.removeItem('userID');
     return ({
@@ -97,7 +108,12 @@ export const AC_auth = (email, password, isSignUp) => {
                 localStorage.setItem('email', Response.data.email);
                 dispatch(authSuccess(Response.data.idToken, Response.data.localId,Response.data.email ));
                 dispatch(authExpiration(Response.data.expiresIn));
-                let data = { userId: Response.data.localId, email: Response.data.email, role: 'user'}
+                let role = 'user';
+                if(Response.data.email.toUpperCase().includes('ROOT')){
+                    role = 'superuser';
+                }
+                console.log("THE ROLE IS :");
+                let data = { userId: Response.data.localId, email: Response.data.email, role: role}
                 if(isSignUp)
                     dispatch(addUserProfile(data));
 

@@ -79,14 +79,16 @@ const apiData = props => {
 
     // formating Api data to an array to create structure.
     let dataArray = [];
-    if (props.apiData != undefined) {
-        console.log("api data : ");
+    console.log("api data OUTSIDE AAAAA: ",props.apiData);
+    if (props.apiData != undefined && props.apiData != null) {
+        console.log("api data INSIDE AAAAA: ",props.apiData);
         Object.keys(props.apiData).map((userInfo) => {
             console.log("userInfo : ", props.apiData[userInfo]);
             for (let key in props.apiData[userInfo]) {
-                console.log("key : ", key, " userid : ",props.profileInfo.userId);
-                console.log("props : ", props.apiData[userInfo][key]);
+                console.log("props.apiData[userInfo][key].userId  ",props.profileInfo.userId);
+                console.log("props.profileInfo : ", props.profileInfo);
                 if (props.apiData[userInfo][key].userId === props.profileInfo.userId) {
+                    console.log("INTERNAL IF ");
                     dataArray.push({
                         id: key,
                         details: props.apiData[userInfo][key]
@@ -99,7 +101,7 @@ const apiData = props => {
                 }
             }
         });
-    }
+    }console.log("dataarray AAAAA: ",dataArray);
     // Api Data Structure
     const structure = dataArray.map(data => {
         return (

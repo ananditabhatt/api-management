@@ -87,6 +87,7 @@ export const getUserData = () => {
         dispatch(getUsersApiCallStart());  
         axios.get('/userData.json')
             .then(res => { 
+                console.log(" RED DATA IN ACTION :",res.data);
                 dispatch(getUsersApiCallSuccess(res.data));           
             })
             .catch(err => 
@@ -145,4 +146,10 @@ export const updateUserData = (userData,key) => {
             } )
 
     });
+}
+//clear API data
+export const clearAPIdata = () => {
+    return {
+        type: actionTypes.CLEAR_API_DATA
+    };
 }

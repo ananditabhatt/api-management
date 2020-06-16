@@ -39,7 +39,7 @@
     width: 500px;
     color: white;
     height: 435px;
-    top: 3vh;
+    top: 6vh;
     padding: 10px;
     -webkit-perspective: 1000px;
     perspective: 1000px;
@@ -96,7 +96,7 @@
   }
 
   .myVideo {
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     min-width: 100%; 
@@ -112,7 +112,6 @@
   }
 
   .contentlogin {
-    /* position: absolute; */
     bottom: 0;
     right: 0px;
     background: rgba(0, 0, 0, 0.5);
@@ -120,7 +119,7 @@
     width: 100%;
     padding: 20px;
    height: 29%;
-    position: absolute;
+    position: fixed;
      z-index: 2;
     border-top: 2px solid #824f4f73;
   }

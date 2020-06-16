@@ -6,12 +6,14 @@ export {
     getUserData, 
     postUserData,
     deleteUserData,
-    updateUserData
+    updateUserData,
+    clearAPIdata
 } from './manageUsersAction'
 
 export { 
     getUserProfile, 
-    addUserProfile
+    addUserProfile,
+    clearProfileData
 } from './profilesAction'
 
 export {

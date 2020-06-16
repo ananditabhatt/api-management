@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/constants';
 
-const initialState = {};
+const initialState = { apiData: null };
 
 const manageUsersReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -65,6 +65,11 @@ const manageUsersReducer = (state = initialState, action) => {
             console.log("UPDATE_USER_API_CALL_SUCCESS");
             return {
                 ...state
+            };
+        case actionTypes.CLEAR_API_DATA:
+            console.log("CLEAR_API_DATA");
+            return {
+                state: { ...initialState}
             };
         default:
             return state;

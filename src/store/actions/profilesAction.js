@@ -1,5 +1,7 @@
 import * as actionTypes from './constants';
 import axios from '../../axios-users';
+import { getUserData } from './manageUsersAction';
+import { getRoles } from './rbacAction';
 
 //add user profile
 export const addUserProfileApiCallStart = () => {
@@ -39,33 +41,41 @@ export const getUserProfileApiCallSuccess = (data) => {
 }
 // add user profile api call
 export const addUserProfile = (data) => {
-    console.log("ADD PROFILE DATA ",data);
-    return(dispatch => {
-        dispatch(addUserProfileApiCallStart());  
+    console.log("ADD PROFILE DATA ", data);
+    return (dispatch => {
+        dispatch(addUserProfileApiCallStart());
         axios.put(`/profiles/${data.userId}.json`, data)
-            .then(res => { 
-                dispatch(addUserProfileApiCallSuccess(data));          
+            .then(res => {
+                dispatch(addUserProfileApiCallSuccess(data));
+                dispatch(getUserProfile(data.userId));
             })
             .catch(err => {
                 console.log("in post user profile");
                 dispatch(addUserProfileApiCallFailure(err));
-            } )
+            })
 
     });
 }
 // get user profile info
 export const getUserProfile = (userId) => {
-    return(dispatch => {
-        dispatch(getUserProfileApiCallStart());  
+    return (dispatch => {
+        dispatch(getUserProfileApiCallStart());
         axios.get(`/profiles/${userId}.json`)
-            .then(res => { 
-                dispatch(getUserProfileApiCallSuccess(res.data));           
+            .then(res => {
+                dispatch(getUserProfileApiCallSuccess(res.data));
+                dispatch(getUserData());
+                dispatch(getRoles());
             })
-            .catch(err => 
-                {
-                    console.log("in get get UserData");
-                    dispatch(getUserProfileApiCallfailure(err));
-                })
+            .catch(err => {
+                console.log("in get get UserData");
+                dispatch(getUserProfileApiCallfailure(err));
+            })
 
     });
+}
+//clear profile data
+export const clearProfileData = () => {
+    return {
+        type: actionTypes.CLEAR_PROFILE_DATA
+    };
 }

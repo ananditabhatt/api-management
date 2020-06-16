@@ -175,9 +175,9 @@ class Auth extends Component {
         return (
           <Aux>
             {autoReditect}
-            {/* background video component with autoplay and mute*/}
-            <video
-              className={classes.myVideo}
+            background video component with autoplay and mute*/}
+             <video
+              className={classes.myVideo}Î
               loop
               autoplay="autoplay"
               id="myVideo"
@@ -185,7 +185,7 @@ class Auth extends Component {
               <source src={loginBackground} type="video/mp4" />
               Your browser does not support HTML5 video.
             </video>
-            {/* Footer Telstra T22 Content*/}
+            {/* Footer Telstra T22 Content */}
 
             <div className={classes.contentlogin}>
               <h3>Telstra's API Management</h3>
@@ -263,6 +263,7 @@ class Auth extends Component {
                   &nbsp;&nbsp;{" "}
                 </div>
               </div>
+              <div style={{height:'50vh'}}></div>
             </div>
           </Aux>
         );
