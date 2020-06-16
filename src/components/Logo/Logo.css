@@ -1,7 +1,12 @@
 .Logo {
     background-color: white;
-    padding: 8px;
+    /* margin: 6px; */
+    margin-top: 6px;
+    margin-left: 6px;
+    padding: 0px;
     height: 100%;
+    width: 0vh;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border-radius: 5px;
 }

@@ -1,10 +1,10 @@
 .Header {
     width: 100%;
-    position: absolute;
-    bottom: 86vh;
-    height: 15vh;
+    position: fixed;
+    bottom: 91vh;
+    height: 9vh;
     left: 1px;
-    background-color: #432720f2;
+    background-color: #194752ed;
     -ms-flex-pack: justify;
     justify-content: space-between;
     -ms-flex-align: center;

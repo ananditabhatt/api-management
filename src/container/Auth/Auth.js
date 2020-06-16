@@ -5,10 +5,19 @@ import classes from './Auth.css'
 import Spinner from "../../components/UI/Spinner/Spinner";
 import * as actionCreators from "../../store/actions/actionCreators";
 import { connect } from "react-redux";
-import Aux from "../../hoc/Aux";
+import Aux from '../../hoc/Aux';
 import loginBackground from "../../assets/Login.mp4";
 import signup from '../../assets/signup.png';
+import { flexbox, width, height } from "@material-ui/system";
+import Card  from "../../components/UI/Card/Card"
+import telstra from "../../assets/telstra.jpg"
+import iot from "../../assets/iot.png"
+import event from "../../assets/event.jpg"
+import logojpg from "../../assets/logojpg.jpg"
 
+import message from "../../assets/message.jpg"
+import Banner from "../../components/UI/Banner/Banner";
+import Infomation from "../../components//Information/Information";
 let errorMessage = null;
 class Auth extends Component {
     //Local state Mananagemnt for the form elements
@@ -19,7 +28,7 @@ class Auth extends Component {
                 elementType: "input",
                 elementConfig: {
                     type: "email",
-                    placeholder: "Email"
+                    placeholder: "example@domain.com"
                 },
                 value: "",
                 validation: {
@@ -44,7 +53,45 @@ class Auth extends Component {
                 touched: false
             }
         },
-        isSignUp: false
+        isSignUp: false,
+
+        Card: {
+       
+          Card1: {
+            url: "https://dev.telstra.com/content/messaging-api",
+            title: "Messaging API",
+            image:message,
+            subvalue:"Send and receive SMS and MMS messages globally using enterprise grade Messaging API. It also allows your application to track the delivery status of both sent and received messages."
+            
+          },
+          Card2: {
+            url: "https://dev.telstra.com/content/connected-things-api",
+            title: "Connected Things API",
+            image:iot,
+            subvalue:"Query details and network information for your IoT SIM connected to CAT-M1 network (Australia's largest LPWAN network). This API will provide you critical information on your SIMs, data..."
+            
+            
+            
+          },
+          Card3: {
+            url: "https://dev.telstra.com/content/programmable-network-api",
+            title: "Programmable Network API",
+            image:telstra,
+            subvalue:"Programmable Network is a self-provisioning platform that allows its users to create on-demand connectivity services between multiple end-points and add various network functions to those..."
+            
+            
+          },
+          Card4: {
+            url: "https://dev.telstra.com/content/event-detection-api",
+            title: "Event Detection API",
+            image:event,
+            subvalue:"Event Detection API provides the ability to subscribe to and receive mobile network events for registered mobile numbers associated with mobile network, such as; SIM..."
+            
+            
+          },
+         
+        
+      }
     };
 
     //checking the validity of the enterted values in the form elements
@@ -113,6 +160,38 @@ class Auth extends Component {
     };
 
     render() {
+ 
+      const CardArray = [];
+      for (let key in this.state.Card) {
+        CardArray.push({
+          id: key,
+          config: this.state.Card[key]
+        });
+  
+      }
+  
+      let Cards = (
+        <div className={classes.containertest}>
+          {CardArray.map(Elemet => {
+            return (
+              <Card
+                navigateProfile={(id)=>this.navigateProfile(id)}
+                red={this.state.red}
+                key={Elemet.id}
+                id={Elemet.id}
+                image={Elemet.config.image}
+                url={Elemet.config.url}
+                title={Elemet.config.title}
+                subvalue={Elemet.config.subvalue}
+              />
+            );
+          })}
+        </div>);
+
+
+
+
+
         // converting the state controls from object to Array 
         let formArray = [];
         for (let key in this.state.controls) {
@@ -175,33 +254,15 @@ class Auth extends Component {
         return (
           <Aux>
             {autoReditect}
-            background video component with autoplay and mute*/}
-             {/* <video
-              className={classes.myVideo}Î
-              loop
-              autoplay="autoplay"
-              id="myVideo"
-            >
-              <source src={loginBackground} type="video/mp4" />
-              Your browser does not support HTML5 video.
-            </video> */}
-            {/* Footer Telstra T22 Content */}
-
-            <div className={classes.contentlogin}>
-              <h3>Telstra's API Management</h3>
-              <p>
-                Our Stratergies and Goals are aligned with Enterprise T22
-                Strategy which will enable us to lead the Australian market by
-                simplifying our products and services to improve customer
-                experience.
-              </p>
-              <h6 className={classes.login_copyright}>
-                &copy;Telstra Corporation Limited
-              </h6>
-            </div>
+   
             {/* SignUp/SignIn Flip cards*/}
-            <div className={["flip-card", classes.flipcard].join(" ")}>
-              <div
+            <div className={classes.outerdiv}>
+             
+              <Banner/>
+              <div>{Cards}</div>
+
+                     <div className={["flip-card", classes.flipcard].join(" ")}>
+            <div
                 className={["flip-card-inner", classes.flipcardinner].join(" ")}
               >
                 <div
@@ -218,6 +279,7 @@ class Auth extends Component {
                   )}
                 >
                   <form onSubmit={this.submitHandler}>
+                 
                     <h2>{this.state.isSignUp ? "SignUp" : "SignIn"}</h2>
                     {errorMessage}
                     {form}
@@ -262,8 +324,12 @@ class Auth extends Component {
                   )}
                   &nbsp;&nbsp;{" "}
                 </div>
-              </div>
-              <div style={{height:'50vh'}}></div>
+              </div> 
+
+
+            </div>
+
+           <Infomation/>
             </div>
           </Aux>
         );

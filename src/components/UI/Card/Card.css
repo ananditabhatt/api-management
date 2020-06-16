@@ -1,0 +1,53 @@
+.Card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    color: white;
+    text-align: center;
+    font-family: arial;
+    z-index: 2;
+    position: relative;
+     top: 0; 
+     bottom: 0;
+     margin: auto;
+     padding: 20px;
+     top:15vh;
+     margin-bottom: 2vh;
+     width: 300px;
+     height: auto;
+    border: 1px solid  rgba(0, 0, 0, 0.349);
+  }
+  
+ 
+  .Card_title {
+    color: white;
+    font-size:small;
+   
+  }
+  .Card img {
+ width: 300px;
+ height: auto;
+   
+  }
+  
+  .Card button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
+  
+  .Card a {
+    text-decoration: none;
+    font-size: 22px;
+    color: white;
+  }
+  
+  .Card button:hover, .Card a:hover {
+    opacity: 0.7;
+  }

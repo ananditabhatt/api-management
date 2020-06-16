@@ -1,4 +1,10 @@
 
     .NavigationItems {
         flex-flow: row;
+        color: black
     }
+
+    .NavigationItems span>i{
+       float: left;
+    }
+

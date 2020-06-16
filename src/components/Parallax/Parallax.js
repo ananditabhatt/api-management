@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classes from './Parallax.css';
-import img from '../../assets/background.jpg';
+import img from '../../assets/background.png';
 import {Parallax, Background }from 'react-parallax';
 
 
