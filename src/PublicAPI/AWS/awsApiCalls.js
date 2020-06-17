@@ -33,8 +33,7 @@ const createAWSjson = (data, userId) => {
 }
 
 //generate new AWS api key
-export const generateAWSApiKey = (event, value, userId, showSuccessModal, onPostUserData, setErrorModal) => {
-    event.preventDefault();
+export const generateAWSApiKey = (value, userId, showSuccessModal, onPostUserData, setErrorModal) => {
     let params = {
         description: 'Test API',
         enabled: true,

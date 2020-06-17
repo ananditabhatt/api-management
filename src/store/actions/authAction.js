@@ -188,3 +188,10 @@ export const AC_authReset = (email) => {
     }
 
 }
+
+export const AC_SignUpwindow= () => {
+    return ({
+        type: actionTypes.AUTH_SIGNUP_WINDOW,
+        
+    })
+}

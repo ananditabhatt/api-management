@@ -1,0 +1,46 @@
+.Container {
+    position: absolute;
+      min-height: 60vh;
+      background: #f5f3efd9;
+      width: 200vh;
+      display: flex;
+  }
+  .playerWrapper{
+    position: relative;
+    padding-top: 56.25%;
+    width: 200vh;
+    height: 100vh;
+  }
+  
+  .reactPlayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .KeyGenContainer{
+    width: 500px;
+    top: 22vh;
+    left: 65vh;
+    position: absolute;
+    text-align: center;
+    height: 23vh;
+    padding: 20px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 42px;
+  }
+  .TitleText{
+    color: white;
+    font-size: 20px;
+    font-family: sans-serif;
+  }
+  .Title{
+    color: white;
+    font-size: 22px;
+  }
+  .TitleKey{
+    color: white;
+    font-size: 22px;
+    margin-top: 15vh;
+    margin-bottom: 4vh;
+  }

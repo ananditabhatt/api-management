@@ -1,5 +1,7 @@
 import React from 'react';
 import classes from './Input.css';
+import ReactTooltip from "react-tooltip";
+
 
 const Input = (props) => {
     let inputElement = null;
@@ -45,11 +47,20 @@ const Input = (props) => {
     }
 
     return (
-        <div className={classes.Input}>
-            <label className={classes.Label}>{props.label}</label>
-            {inputElement}
-            {/* {validationError} */}
+      <div className={classes.Input} style={{display:"flex"}}>
+        <div style={{margin: "auto",height: "auto",padding: "7px"}}>
+          <i data-tip={props.tooltip} class="fa fa-info-circle"></i>
+
+    
+          <ReactTooltip />
         </div>
+        <div  style={{height: "auto", width: "59vh",marginRight: "33px"}}  >
+          <label className={classes.Label}> {props.label}</label>
+          
+          {inputElement}
+        </div>
+        {/* {validationError} */}
+      </div>
     );
 }
 

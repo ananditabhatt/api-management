@@ -1,12 +1,18 @@
 .Input {
-    width: 100%;
+    width: 91%;
+    margin: auto;
+    /* text-align: center; */
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    margin-bottom: 16px;
 }
+
 
 .Label {
     font-weight: bold;
     display: block;
     margin-bottom: 8px;
+    color: grey
 }
 
 .InputElement {

@@ -110,7 +110,7 @@ const apiData = props => {
                 <div>
                     {<CollapsibleHeader name={data.details.name} enabled={data.details.enabled} />}
                 </div>
-                <div style={{padding:'1rem'}} className="collapsible-body">
+                <div style={{padding:'1rem', backgroundColor:'#295d67a1'}} className="collapsible-body">
                     {getCollapsibleBody(data.details)}
                 </div>
             </li>);
@@ -123,7 +123,7 @@ const apiData = props => {
             <Modal modalClosed={() => props.showDeleteWarningModal(false)} show={props.deleteWarningModal}>{props.deleteAPIWarning}</Modal>
             <div className={classes.Container}>
                 <ul ref={Collapsible => { this.Collapsible4 = Collapsible; }}
-                    className="collapsible popout" style={{marginTop:'5vh'}} > 
+                    className="collapsible popout" style={{marginTop:'5vh', marginBottom: '15vh'}} > 
                     {structure}
                 </ul>
             </div>

@@ -1,7 +1,7 @@
 
     .NavigationItems {
         flex-flow: row;
-        color: black
+        color: #ffffff;
     }
 
     .NavigationItems span>i{
