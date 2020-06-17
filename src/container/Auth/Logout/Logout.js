@@ -6,19 +6,21 @@ import classes from './Logout.css';
 import Aux from '../../../hoc/Aux';
 
 class Logout extends Component {
+    state={
+        redirect:false
+    }
 
     componentDidMount() {
         this.props.onLogout()
+        this.setState({
+            redirect:true
+        })
 
     }
     render() {
         return (
             <Aux>
-                <div className={classes.Logout}>
-                    <h4>You have Successfully logged Out!!</h4>
-                    <br /><br />
-                    <NavLink to="/" style={{ color: "black", fontSize: "bold" }}>Click here to Login!</NavLink>
-                </div>
+                {this.state.redirect?<Redirect to="/"/>:null}
             </Aux>)
     }
 }

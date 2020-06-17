@@ -1,0 +1,42 @@
+.innerdiv4{
+
+   
+    /* height: 400px; */
+    display: inline-block;
+    vertical-align: top;
+    padding: 15px;
+    text-align: initial;
+    margin: 10px;
+    position: relative;
+    left: 54px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline;
+    zoom: 1;
+    font-size: 0.875rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+ 
+    letter-spacing: 0.01071em;
+    position: relative;
+    bottom: 49vh;
+    width: 65%;
+    text-align: initial;
+}
+
+.innerdiv4 h6{
+  font-size: 1.25rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+    line-height: 1.6;
+}
+.innerdiv4 p{
+  color: rgba(0, 0, 0, 0.54);
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.innerdiv4 img{
+border-style: none;
+    height: 55%;
+    width: 104%;
+}

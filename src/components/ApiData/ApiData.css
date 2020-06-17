@@ -1,4 +1,31 @@
-.Container{
-    width: 40%;
-    margin: 0 auto;
+.Container {
+    padding: 15vh 0 0 10vh;
+    }
+
+    /* .Container > div img{
+      height: '5vh';
+    } */
+
+    .Container > div {
+        width: 23%;
+        display: inline-block;
+        border: 1px rgba(0, 0, 0, 0.158) solid;
+        margin: 3vh 2vh 0px 0vh;
+        position: relative;
+        zoom: 1
+    }
+
+
+    .Container .MuiCard-root{
+        border-radius: 5vh;
+    }
+
+    .Container:after {
+    content: "";
+    width: 100%;
+    display: inline-block;
+      }
+
+.SingleCard{
+
 }

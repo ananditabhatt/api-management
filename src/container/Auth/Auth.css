@@ -58,6 +58,7 @@ vertical-align: top;
   border: 1px rgba(0, 0, 0, 0.158) solid;
   padding: 10px;
   margin: 10px;
+  text-align: left;
 position: relative;
 /* IE fix. */
 *display: inline;
@@ -92,6 +93,8 @@ height: 50px;
 background: #4285f4;
 transform: translate(-6px, -20px);
 }
+
+
  .flipcard {
   background-color: transparent;
   width: 500px;
@@ -135,21 +138,23 @@ transform: translate(-6px, -20px);
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px
 }
 
 .flipcardfront {
-  background-color:rgba(40, 84, 94, 0.92);
+  background-color:rgb(10, 35, 41);
   color: white;
 }
 .flipcardfront img{
   width: 250px;
   height: 300px;
-  margin-top: 20px;
+  margin-top: 59px;
   background-color: transparent
 }
 
 .flipcardback {
-  background-color: rgba(40, 84, 94, 0.92);
+  background-color:rgb(10, 35, 41);
   color: white;
   transform: rotateY(180deg);
 }
@@ -190,7 +195,6 @@ body {
   font-size: 15px;
 }
 .myBtn {
-  -moz-appearance: none;
   -webkit-appearance: none;
   background: transparent;
   -webkit-box-sizing: border-box;
@@ -200,7 +204,7 @@ body {
   margin-top: 26px;
   display: inline-block;
   height: 36px;
-  margin: 0;
+  margin: 3px;
   min-width: 36px;
   outline: 0;
   overflow: hidden;
@@ -214,7 +218,6 @@ body {
   transition: background-color .2s,border .2s,box-shadow .2s,-webkit-box-shadow .2s;
   vertical-align: middle;
   white-space: nowrap;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   border: 1px solid #dadce0;
   -webkit-box-shadow: none;
@@ -236,6 +239,7 @@ top:0;
   border-top: 2px solid #824f4f73;
 }
 
+
 .myBtn:hover {
   background: #ddd;
   color: black;
@@ -249,3 +253,4 @@ top:0;
     text-align: center;
     font-size: 60%
 }
+

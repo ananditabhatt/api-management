@@ -16,3 +16,11 @@
   .ParallaxContainer {
     top: 205vh
   }
+  .myparallax{
+    position: relative;
+    overflow: hidden;
+    top: 240vh;
+    /* background-color: #29525200; */
+    z-index: -40;
+	
+  }

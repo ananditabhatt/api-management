@@ -1,9 +1,10 @@
 .Container {
-    position: absolute;
-      min-height: 60vh;
-      background: #f5f3efd9;
-      width: 200vh;
-      display: flex;
+  position: relative;
+    background: #251604bf;
+    width: auto;
+    height: 100%;
+    display: -ms-flexbox;
+    display: flex;
   }
   .playerWrapper{
     position: relative;

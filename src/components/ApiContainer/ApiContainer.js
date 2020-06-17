@@ -7,7 +7,6 @@ import KeyGenerator from '../../components/KeyGenerator/KeyGenerator';
 
 const apiContainer = props => {
     return (
-        <div style={{ backgroundColor: '#00000059', minHeight: '150vh', position: 'relative' }}>
             <div className={classes.Container}>
                 <div>
                     <KeyGenerator
@@ -52,7 +51,6 @@ const apiContainer = props => {
                     />
                 </div> */}
             </div>
-        </div>
     );
 }
 

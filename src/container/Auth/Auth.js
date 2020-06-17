@@ -7,18 +7,15 @@ import * as actionCreators from "../../store/actions/actionCreators";
 import { connect } from "react-redux";
 import Aux from '../../hoc/Aux';
 import signup from '../../assets/signup.png';
-import { flexbox, width, height } from "@material-ui/system";
-import Card from "../../components/UI/Card/Card"
+import Card  from "../../components/UI/Card/Card"
 import telstra from "../../assets/telstra.jpg"
-import { Parallax, Background } from 'react-parallax';
 import iot from "../../assets/iot.png"
 import event from "../../assets/event.jpg"
-import logojpg from "../../assets/logojpg.jpg"
-import Footer from '../../components/Navigation/Footer/Footer';
-import CookieConsent from "react-cookie-consent";
 import message from "../../assets/message.jpg"
 import Banner from "../../components/UI/Banner/Banner";
 import Infomation from "../../components//Information/Information";
+import Cookie from "../../components/UI/Cookie/Cookie";
+import Text from "../../components/UI/Text/Text";
 let errorMessage = null;
 class Auth extends Component {
   //Local state Mananagemnt for the form elements
@@ -75,7 +72,7 @@ class Auth extends Component {
       },
       Card3: {
         url: "https://dev.telstra.com/content/programmable-network-api",
-        title: "Programmable Network API",
+        title: "Programmable Network",
         image: telstra,
         subvalue:
           "Programmable Network is a self-provisioning platform that allows its users to create on-demand connectivity services between multiple end-points and add various network functions to those..."
@@ -85,7 +82,7 @@ class Auth extends Component {
         title: "Event Detection API",
         image: event,
         subvalue:
-          "Event Detection API provides the ability to subscribe to and receive mobile network events for registered mobile numbers associated with mobile network, such as; SIM..."
+          "Event Detection API provides the ability to subscribe to and receive mobile network events for registered mobile numbers associated with mobile network in organization world, such as; SIM..."
       }
     }
   };
@@ -246,100 +243,96 @@ class Auth extends Component {
     }
 
 
-    let flipcard = (<div className={["flip-card", classes.flipcard].join(" ")}>
-      <div
-        className={["flip-card-inner", classes.flipcardinner].join(" ")}
-      >
-        <div
-          className={["flip-card-front", classes.flipcardfront].join(" ")}
-        >
-          <img src={signup} alt="Signup" />
-        </div>
+     let flipcard=(        <div className={["flip-card", classes.flipcard].join(" ")}>
+     <div
+       className={["flip-card-inner", classes.flipcardinner].join(" ")}
+     >
+       <div
+         className={["flip-card-front", classes.flipcardfront].join(" ")}
+       >
+     
 
-        <div
-          className={["flip-card-back", classes.flipcardback].join(" ")}
-        >
-          <form onSubmit={this.submitHandler}>
-            <h2>{this.state.isSignUp ? "SignUp" : "SignIn"}</h2>
-            {errorMessage}
+         <img src={signup} alt="Signup" />
+       </div>
 
-            {form}
-            <div>
-              <button className={classes.myBtn}>
-                {this.state.isSignUp ? (
-                  "SignUp"
-                ) : (
-                    <i className="fa fa-envelope"> SignIn With Email</i>
-                  )}
-              </button>
-            </div>
-            <br />
-            <div>
-              {this.state.isSignUp ? (
-                ""
-              ) : (
-                  <button
-                    className={classes.myBtn}
-                    onClick={this.GoogleAuth}
-                  >
-                    <i className="fa fa-google "> Login With Google</i>
-                  </button>
-                )}
-            </div>
-            <p style={{ fontSize: "10px", textAlign: "center" }}>
-              {this.state.isSignUp
-                ? "By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy."
-                : null}
-            </p>
-          </form>
-          <i
-            onClick={this.switchToLogin}
-            style={{
-              textDecoration: "underline",
-              marginRight: "21px",
-              cursor: "pointer"
-            }}
-          >
-            Switch To {this.state.isSignUp ? "SignIn" : "SignUp"}
-          </i>
-          {this.state.isSignUp ? null : (
-            <NavLink to="/ResetPassword">
-              <i
+       <div
+         className={["flip-card-back", classes.flipcardback].join(" ")}
+       >
+         <form onSubmit={this.submitHandler}>
+           <h2>{this.state.isSignUp ? "Sign Up" : "Sign In"}</h2>
+           {errorMessage}
+
+           {form}
+           <div >
+             <button className={classes.myBtn}>
+               {this.state.isSignUp ? (
+                 "SignUp"
+               ) : (
+                 "SignIn With Email"
+               )}
+             </button>
+             <button className={classes.myBtn} onClick={this.props.onCancelWindow}>
+               {this.state.isSignUp ? (
+                 "Cancel Sign Up"
+               ) : (
+                 "Cancel Sign In"
+               )}
+             </button>
+             
+           </div>
+           <br />
+           <div>
+             {this.state.isSignUp ? (
+               ""
+             ) : (
+               <button
+                 className={classes.myBtn}
+                 onClick={this.GoogleAuth}
+               >
+                 Login With Google
+               </button>
+             )}
+           </div>
+           <p style={{ fontSize: "10px", textAlign: "center" }}>
+             {this.state.isSignUp
+               ? "By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy."
+               : null}
+           </p>
+         </form>
+         <i
+           onClick={this.switchToLogin}
+           style={{
+             textDecoration: "underline",
+             marginRight: "21px",
+             cursor: "pointer"
+           }}
+         >
+           Switch To {this.state.isSignUp ? "SignIn" : "SignUp"}
+         </i>
+         {this.state.isSignUp ? null : (
+           <NavLink to="/ResetPassword">
+             <i
                /* className="fa fa-unlock-alt"  */ style={{
-                  textDecoration: "underline",
-                  fontStyle: "italic",
-                  color: "white",
-                  cursor: "pointer"
-                }}
-              >
-                Reset Password
+                 textDecoration: "underline",
+                 fontStyle: "italic",
+                 color: "white",
+                 cursor: "pointer"
+               }}
+             >
+               Reset Password
              </i>
-            </NavLink>
-          )}
+           </NavLink>
+         )}
          &nbsp;&nbsp;{" "}
-        </div>
-      </div>
-    </div>);
+       </div>
+     </div>
+   </div>);
 
     return (
       <Aux>
-        <CookieConsent
-          enableDeclineButton
-          flipButtons
-          style={{
-            background: "rgba(0, 0, 0, 0.89)",
-            color: "white"
-          }}
-        >
-          We use cookies to improve user experience. For this reasons. By
-          continuing to the site, you consent to store on some of your user data
-          in your local browser as per our cookies Policy. You can change your
-          cookie settings at any time by clicking âCookie Preferences.â Please
-          read our Terms and Conditions and Privacy Policy for full details..
-        </CookieConsent>
-
+      
+<Cookie/>
         {autoReditect}
-
 
         <div className={classes.outerdiv}>
           <Banner />
@@ -348,29 +341,30 @@ class Auth extends Component {
           {this.props.isSignUpWindow ? flipcard : null}
 
           <Infomation />
+         <Text/>
         </div>
-       
-        
       </Aux>
     );
   }
 }
 //Subscribe the state from redux store
 const mapStateToProps = state => {
-  return {
-    spinner: state.auth.spinner,
-    error: state.auth.error,
-    IsAuthenticated: state.auth.token != null,
-    isSignUpWindow: state.auth.isSignUpWindow
-  };
+    return {
+        spinner: state.auth.spinner,
+        error: state.auth.error,
+        IsAuthenticated: state.auth.token != null,
+        isSignUpWindow:state.auth.isSignUpWindow
+    };
 };
 //call the dispatcher to redux store
 const mapDispatchToProps = dispatch => {
-  return {
-    onAuthentication: (email, password, isSignUp) =>
-      dispatch(actionCreators.AC_auth(email, password, isSignUp)),
-    onGoogle: () => dispatch(actionCreators.AC_auth_google())
-  };
+    return {
+        onAuthentication: (email, password, isSignUp) =>
+            dispatch(actionCreators.AC_auth(email, password, isSignUp)),
+        onGoogle: () => dispatch(actionCreators.AC_auth_google()),
+        onCancelWindow: () => dispatch(actionCreators.AC_CancelWindow())
+        
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

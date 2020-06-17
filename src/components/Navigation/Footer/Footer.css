@@ -1,9 +1,9 @@
 .Footer {
-    color: #fff;
-    width: 200vh;
-    top: 31vh;
-    height: 32vh;
+	color: #fff;
+    width: 100%;
+    top: 272vh;
+    height: 39%;
     position: absolute;
-    background-color:#26545d;
-
+    z-index: -3;
+    background-color: #29545e;
 }

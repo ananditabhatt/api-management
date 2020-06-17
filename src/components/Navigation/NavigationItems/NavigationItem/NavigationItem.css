@@ -1,54 +1,53 @@
-    .NavigationItem {
-        margin: 10px 0;;
-        box-sizing: border-box;
-        display: block;
-        width: 100%;
-        float: right;
-        color: white;
-        height: 1px;
-    }
-    
-    .NavigationItem a {
-        /* color: #8F5C2C; */
-        text-decoration: none;
-        width: 100%;
-        box-sizing: border-box;
-        display: block;
-    }
-    .NavigationItem i {
-        /* color: #8F5C2C; */
-        float: left;
-    }
-    
-    .NavigationItem a:hover,
-    .NavigationItem a:active,
-    .NavigationItem a.active {
-        color: #40A4C8;
-    }
+.NavigationItem {
+    margin: 10px 0;;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    float: right;
+    color: white;
+    height: 1px;
+}
+
+.NavigationItem a {
+    /* color: #8F5C2C; */
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+.NavigationItem i {
+    /* color: #8F5C2C; */
+    float: left;
+}
+
+.NavigationItem a:hover,
+.NavigationItem a:active,
+.NavigationItem a.active {
+    color: #40A4C8;
+}
 
 @media (min-width : 500px) {
 
-    .NavigationItem {
-        margin: 0;
-        height: 1px;
-        display: flex;
-        width: auto;
-        align-items: center;
-    }
-    
-    .NavigationItem a {
-        color: white;
-        height: 100%;
-        padding: 16px 10px;
-        border-bottom: 4px solid transparent;
-    }
-    
-    .NavigationItem a:hover,
-    .NavigationItem a:active,
-    .NavigationItem a.active {
-        /* background-color: #8F5C2C; */
-        /* border-bottom: 4px solid #ccc; */
-        color: white;
-    }
-    
+.NavigationItem {
+    margin: 0;
+    height: 1px;
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+.NavigationItem a {
+    color: white;
+    height: 100%;
+    border-bottom: 4px solid transparent;
+}
+
+.NavigationItem a:hover,
+.NavigationItem a:active,
+.NavigationItem a.active {
+  
+    /* border-bottom: 4px solid #ccc; */
+    color: white;
+}
+
 }

@@ -4,11 +4,26 @@ import classes from './ApiData.css';
 import Modal from '../UI/Modal/Modal';
 import ScopeTable from './ScopeTable/ScopeTable'
 import UpdateApiCard from './UpdateApiCard/UpdateApiCard';
+import apiImg from './../../assets/apiKey.jpg'
 import CollapsibleHeader from './CollapsibleHeader/CollapsibleHeader';
 import CollapsibleBody from './CollapsibleBody/CollapsibleBody';
 import DeleteWarningModal from './DeleteWarningModal/DeleteWarningModal';
+import Card from '../../components/UI/Card/Card';
+import CardContainer from './CardContainer/CardContainer';
 
 const apiData = props => {
+
+    const fields = {
+        'client_id': 'Client ID',
+        'value': 'Secret',
+        'lastUpdatedDate': 'Last Modified',
+        "enabled": 'Status'
+    };
+
+    const btns = [
+        { id: 'Scope', handler: 'getScopeTable' },
+        { id: 'edit', handler: 'handleEditRequest' },
+        { id: 'delete', handler: 'handleDeleteRequest' }];
 
     const textFieldsCollapsiblebodyObj = {
         'client_id': 'Client ID',
@@ -51,6 +66,40 @@ const apiData = props => {
             content={collapsibleBodyObject}
             buttons={btnsCollapsibleObject} />;
     }
+    // get cards
+    const getCards = details => {
+        let cards = [];
+        console.log("@@@@@@ details ", details);
+        
+        dataArray.map(data => {
+            let dataObj = {};
+            for (let keys in fields) {
+                dataObj[fields[keys]] = data.details[keys];
+            }
+            console.log('data ***,',data)
+            let cardTitle = data.details.name;
+            const cardBody = (<CardContainer
+                details={details}
+                showSecret={props.showSecret}
+                setShowSecret={props.setShowSecret}
+                isSuperUser={props.isSuperUser}
+                handleEditRequest={(details) => handleEditRequest(details)}
+                handleDeleteRequest={(details) => handleDeleteRequest(details)}
+                getScopeTable={(details) => getScopeTable(details)}
+                content={dataObj}
+                buttons={btns} />);
+            
+                console.log("cardTitle : ",cardTitle);
+            cards.push(<div> <Card className='MuiPaper-rounded' image={apiImg} title={cardTitle} subvalue={cardBody} /></div>);
+
+        });
+        return(cards);
+        console.log("cards  NEW : ", cards)
+
+        
+    }
+
+
     //Delete Api warning
     const handleDeleteRequest = details => {
         let dataModal = (
@@ -102,18 +151,15 @@ const apiData = props => {
                 }
             }
         });
-    } console.log("dataarray AAAAA: ", dataArray);
+    } 
+    
     // Api Data Structure
     const structure = dataArray.map(data => {
         return (
-            <li key={data.id}>
-                <div>
-                    {<CollapsibleHeader name={data.details.name} enabled={data.details.enabled} />}
-                </div>
-                <div style={{padding:'1rem', backgroundColor:'#295d67a1'}} className="collapsible-body">
-                    {getCollapsibleBody(data.details)}
-                </div>
-            </li>);
+            <div>
+            {getCards(data.details)}
+            </div>
+            );
     });
 
     return (
@@ -122,10 +168,7 @@ const apiData = props => {
             <Modal modalClosed={() => props.showEditModal(false)} show={props.editModal}>{props.editModalData}</Modal>
             <Modal modalClosed={() => props.showDeleteWarningModal(false)} show={props.deleteWarningModal}>{props.deleteAPIWarning}</Modal>
             <div className={classes.Container}>
-                <ul ref={Collapsible => { this.Collapsible4 = Collapsible; }}
-                    className="collapsible popout" style={{marginTop:'5vh', marginBottom: '15vh'}} > 
-                    {structure}
-                </ul>
+                {getCards(props)}
             </div>
         </div>
     );

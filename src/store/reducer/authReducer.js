@@ -22,11 +22,12 @@ const authStart = (state, action) => {
         apiData: null,
         profileInfo: null,
         isSuperUser: null,
-        spinner: true
+        spinner: true,
+        
     });
 }
 const authSuccess = (state, action) => {
-    return updateObject(state, { error: null, spinner: false, token: action.idToken, userId: action.userId, email: action.email, isSignUpWindow:null  });
+    return updateObject(state, { error: null, spinner: false, token: action.idToken, userId: action.userId, email: action.email,isSignUpWindow:null });
 }
 
 const authFailure = (state, action) => {
@@ -42,8 +43,7 @@ const authLogout = (state, action) => {
         apiData: null,
         profileInfo: null,
         isSuperUser: null,
-        spinner: false,
-        isSignUpWindow:null 
+        spinner: false
     });
 }
 
@@ -60,6 +60,14 @@ const authReset_Failure = (state, action) => {
 const authSignUp_Window = (state, action) => {
     return updateObject(state, {  isSignUpWindow: true });
 }
+
+const authCancel_Window = (state, action) => {
+    return updateObject(state, {  isSignUpWindow: false });
+}
+
+
+
+
 const auth = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.AUTH_START: return authStart(state, action)
@@ -70,6 +78,8 @@ const auth = (state = initialState, action) => {
         case actionTypes.AUTH_RESET_SUCCESS: return authReset_Success(state, action)
         case actionTypes.AUTH_RESET_FAILED: return authReset_Failure(state, action)
         case actionTypes.AUTH_SIGNUP_WINDOW: return authSignUp_Window(state, action)
+        case actionTypes.AUTH_CANCEL_WINDOW: return authCancel_Window(state, action)
+        
         default: return state;
     }
 };

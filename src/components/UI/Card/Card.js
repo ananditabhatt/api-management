@@ -10,49 +10,47 @@ import Typography from '@material-ui/core/Typography';
 import Aux from '../../../hoc/Aux';
 
 const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 240,
-  },
+    root: {
+        maxWidth: 345,
+    },
+    media: {
+        height: 240,
+    },
 });
 
 const Cards = (props) => {
-  const classes = useStyles();
-  let cards = (<Card style={{ maxWidth: "345" }}>
-    <CardActionArea>
-      <CardMedia
-        component="img"
+    const classes = useStyles();
+    let cards = (<Card className='.MuiPaper-rounded' style={{ maxWidth: "345", borderRadius:'4vh' }}>
+        <CardActionArea>
+            <CardMedia
+                component="img"
+                image={props.image}
+                title={props.title}
 
-        image={props.image}
+            />
+            <CardContent>
+                <Typography gutterBottom variant="h6" component="h2">
+                    {props.title}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                    {props.subvalue}
+                </Typography>
+            </CardContent>
+        </CardActionArea>
+        <CardActions>
 
-        title={props.title}
-
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h6" component="h2">
-          {props.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.subvalue}
-        </Typography>
-      </CardContent>
-    </CardActionArea>
-    <CardActions>
-
-      <Button size="small" color="primary">
-        <a href={props.url} >Learn More</a>
-      </Button>
+            <Button size="small" color="primary">
+                <a href={props.url} >Learn More</a>
+            </Button>
 
 
-    </CardActions>
-  </Card>)
-  return (
-    <Aux>
-      {props.red ? null : cards}
-    </Aux>
-  );
+        </CardActions>
+    </Card>)
+    return (
+        <Aux>
+            {props.red ? null : cards}
+        </Aux>
+    );
 }
 
 export default Cards;

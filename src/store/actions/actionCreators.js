@@ -22,5 +22,6 @@ export {
     AC_Auth_CheckState,
     AC_authReset,
     AC_auth_google,
-    AC_SignUpwindow
+    AC_SignUpwindow,
+    AC_CancelWindow
 } from './authAction'

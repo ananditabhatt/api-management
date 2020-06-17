@@ -195,3 +195,10 @@ export const AC_SignUpwindow= () => {
         
     })
 }
+
+export const AC_CancelWindow= () => {
+    return ({
+        type: actionTypes.AUTH_CANCEL_WINDOW,
+        
+    })
+}
