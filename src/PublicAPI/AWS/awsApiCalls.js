@@ -14,7 +14,7 @@ const createAWSjson = (data, userId, type) => {
     let scope = {}
     let permitted = {
         read: true,
-        write: true
+        write: false
     }
     let notPermitted = {
         read: false,
