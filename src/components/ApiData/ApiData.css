@@ -1,31 +1,29 @@
 .Container {
-    padding: 15vh 0 0 10vh;
-    }
+  padding: 17vh 0px 5vh 10vh;
+  }
 
-    /* .Container > div img{
-      height: '5vh';
-    } */
+  .Container  img {
+    width: 49vh;
+    height: 65px;
+  }
 
-    .Container > div {
-        width: 23%;
-        display: inline-block;
-        border: 1px rgba(0, 0, 0, 0.158) solid;
-        margin: 3vh 2vh 0px 0vh;
-        position: relative;
-        zoom: 1
-    }
+  .Container > div {
+    width: 42vh;
+    height: 45vh;
+    display: inline-flex;
+    border: 1px rgba(0, 0, 0, 0.158) solid;
+    margin: 3vh 2vh 0px 0vh;
+    position: relative;
+    zoom: 1;
+  }
 
 
-    .Container .MuiCard-root{
-        border-radius: 5vh;
-    }
+  .Container .MuiCard-root{
+      border-radius: 5vh;
+  }
 
-    .Container:after {
-    content: "";
-    width: 100%;
-    display: inline-block;
-      }
-
-.SingleCard{
-
+  .Container:after {
+  content: "";
+  width: 100%;
+  display: inline-block;
 }

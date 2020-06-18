@@ -4,7 +4,7 @@ import classes from './ApiData.css';
 import Modal from '../UI/Modal/Modal';
 import ScopeTable from './ScopeTable/ScopeTable'
 import UpdateApiCard from './UpdateApiCard/UpdateApiCard';
-import apiImg from './../../assets/apiKey.jpg'
+import apiImg from './../../assets/api2.jpg';
 import CollapsibleHeader from './CollapsibleHeader/CollapsibleHeader';
 import CollapsibleBody from './CollapsibleBody/CollapsibleBody';
 import DeleteWarningModal from './DeleteWarningModal/DeleteWarningModal';
@@ -15,8 +15,8 @@ const apiData = props => {
 
     const fields = {
         'client_id': 'Client ID',
-        'value': 'Secret',
-        'lastUpdatedDate': 'Last Modified',
+        'value': 'Secret ID',
+        'lastUpdatedDate': 'Modified',
         "enabled": 'Status'
     };
 
@@ -69,15 +69,11 @@ const apiData = props => {
     // get cards
     const getCards = details => {
         let cards = [];
-        console.log("@@@@@@ details ", details);
-        
-        dataArray.map(data => {
-            let dataObj = {};
+        let dataObj = {};
             for (let keys in fields) {
-                dataObj[fields[keys]] = data.details[keys];
+                dataObj[fields[keys]] = details[keys];
             }
-            console.log('data ***,',data)
-            let cardTitle = data.details.name;
+            let cardTitle = details.name;
             const cardBody = (<CardContainer
                 details={details}
                 showSecret={props.showSecret}
@@ -88,20 +84,14 @@ const apiData = props => {
                 getScopeTable={(details) => getScopeTable(details)}
                 content={dataObj}
                 buttons={btns} />);
-            
-                console.log("cardTitle : ",cardTitle);
-            cards.push(<div> <Card className='MuiPaper-rounded' image={apiImg} title={cardTitle} subvalue={cardBody} /></div>);
-
-        });
-        return(cards);
-        console.log("cards  NEW : ", cards)
-
-        
+            cards.push(<div style={{width: '98%'}}> <Card url = 'https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en' className='MuiPaper-rounded' test={true} image={apiImg} title={cardTitle} subvalue={cardBody} /></div>);
+        return(cards);     
     }
 
 
     //Delete Api warning
     const handleDeleteRequest = details => {
+        console.log("ON DELETE ",details);
         let dataModal = (
             <DeleteWarningModal
                 details={details}
@@ -129,16 +119,10 @@ const apiData = props => {
 
     // formating Api data to an array to create structure.
     let dataArray = [];
-    console.log("api data OUTSIDE AAAAA: ", props.apiData);
     if (props.apiData != undefined && props.apiData != null) {
-        console.log("api data INSIDE AAAAA: ", props.apiData);
         Object.keys(props.apiData).map((userInfo) => {
-            console.log("userInfo : ", props.apiData[userInfo]);
             for (let key in props.apiData[userInfo]) {
-                console.log("props.apiData[userInfo][key].userId  ", props.profileInfo.userId);
-                console.log("props.profileInfo : ", props.profileInfo);
                 if (props.apiData[userInfo][key].userId === props.profileInfo.userId) {
-                    console.log("INTERNAL IF ");
                     dataArray.push({
                         id: key,
                         details: props.apiData[userInfo][key]
@@ -152,6 +136,13 @@ const apiData = props => {
             }
         });
     } 
+    //sort array by date
+    let dataArray2 = Object.keys(dataArray).sort((a,b) => {
+            console.log("a is :",dataArray[a].details.lastUpdatedDate);
+            console.log("b is :",dataArray[b]);
+            return Date.parse(dataArray[a].details.lastUpdatedDate)  > Date.parse(dataArray[b].details.lastUpdatedDate)
+
+    });
     
     // Api Data Structure
     const structure = dataArray.map(data => {
@@ -168,7 +159,8 @@ const apiData = props => {
             <Modal modalClosed={() => props.showEditModal(false)} show={props.editModal}>{props.editModalData}</Modal>
             <Modal modalClosed={() => props.showDeleteWarningModal(false)} show={props.deleteWarningModal}>{props.deleteAPIWarning}</Modal>
             <div className={classes.Container}>
-                {getCards(props)}
+                {/* {getCards(props)} */}
+                {structure}
             </div>
         </div>
     );

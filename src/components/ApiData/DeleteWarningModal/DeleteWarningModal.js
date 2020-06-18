@@ -9,7 +9,7 @@ const deleteWarningModal = props => (
             <span className={classes.DeleteWarningText}><h6>Do you want to delete {props.details.name} API key?</h6></span>
         </div>
         <div className={classes.DelBtns}>
-            <CustomButton btnType='Success' clicked={() => { props.deletAWSApiKeyHandler(props.details.client_id); props.showDeleteWarningModal(false) }} >
+            <CustomButton btnType='Success' clicked={() => { console.log("props.details.client_id is",props.details.client_id); props.deletAWSApiKeyHandler(props.details.client_id); props.showDeleteWarningModal(false) }} >
                 <i className="material-icons">check</i>
             </CustomButton>
             <CustomButton btnType='Danger' clicked={() => { props.showDeleteWarningModal(false) }}>

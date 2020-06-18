@@ -1,0 +1,19 @@
+.contentdiv{
+    display:flex;
+    width: 29vh;
+    height: 30px
+}
+
+.contentvalue{
+    margin-right: 7vh;
+    height: 29px
+}
+
+.TextFieldsBtns  a{
+    margin-right: '66px';
+    color: 'white';
+    text-decoration: none
+}
+.Secret{
+    text-decoration: underline;
+}

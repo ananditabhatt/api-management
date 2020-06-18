@@ -24,7 +24,7 @@ class Layout extends Component {
                     onSignUpWindow={this.onSignUpWindow}
                 />
                 <main>{this.props.children}</main>
-                <Parallax strength={300} className={classes.myparallax}>
+                {/* <Parallax strength={300} className={classes.myparallax}>
                     <div style={{ height: '60vh' }}>
                         <div class="curved-div">
                             <svg viewBox="0 0 1440 319">
@@ -33,7 +33,7 @@ class Layout extends Component {
                         </div>
                         <Footer />
                     </div>
-                </Parallax>
+                </Parallax> */}
             </Aux>
         );
     }

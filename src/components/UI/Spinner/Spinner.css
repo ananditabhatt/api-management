@@ -55,3 +55,9 @@
     box-shadow: 0 2.5em 0 0;
   }
 }
+.container{
+  min-height: 74vh;
+  width: 195vh;
+  margin: 0 auto;
+  padding-top: 12vh;
+}

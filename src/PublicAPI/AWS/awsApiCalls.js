@@ -1,29 +1,38 @@
 import { APIGateway, S3 } from 'aws-sdk';
 
 const DEFAULT_ROLE = 'user';
+const apiTypes = { messaging: "i6axpo", iot: "xaxg8h" };
 const apigateway = new APIGateway({
     apiVersion: '2015-07-09',
     region: process.env.REACT_APP_AWS_REGION,
     credentials: { accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID, secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY }
 });
 
-const createAWSjson = (data, userId) => {
+const createAWSjson = (data, userId, type) => {
+    console.log("data update ",data);
     let jsonData = {}
+    let scope = {}
+    let permitted = {
+        read: true,
+        write: true
+    }
+    let notPermitted = {
+        read: false,
+        write: false
+    }
+    if (type === 'iot') {
+        scope = {"Messaging": notPermitted,"Iot": permitted}
+    } else if (type == 'messaging'){
+        scope = {"Messaging": permitted,"Iot": notPermitted}
+    }else {
+        scope = {"Messaging": permitted,"Iot": notPermitted}
+    }
     jsonData[data['id']] = {
         "createdDate": data['createdDate'],
         "client_id": data['id'],
         "role": DEFAULT_ROLE,
         "enabled": data['enabled'],
-        "scope": {
-            "events": {
-                read: true,
-                write: false
-            },
-            "manageUsers": {
-                "read": false,
-                "write": false
-            }
-        },
+        "scope": scope,
         "value": data['value'],
         "lastUpdatedDate": data['lastUpdatedDate'],
         "userId": userId,
@@ -33,7 +42,7 @@ const createAWSjson = (data, userId) => {
 }
 
 //generate new AWS api key
-export const generateAWSApiKey = (value, userId, showSuccessModal, onPostUserData, setErrorModal) => {
+export const generateAWSApiKey = (value, type, userId, showSuccessModal, onPostUserData, setErrorModal) => {
     let params = {
         description: 'Test API',
         enabled: true,
@@ -41,21 +50,28 @@ export const generateAWSApiKey = (value, userId, showSuccessModal, onPostUserDat
     };
     apigateway.createApiKey(params, function (err, data) {
         if (err) {
-            console.log(err)
             setErrorModal(err)
         }
         else {
-            showSuccessModal(true);
             let updatedObj = { ...data }
             data['name'] = value
-            let jsonData = createAWSjson(updatedObj, userId);
-            onPostUserData(jsonData);
+            let jsonData = createAWSjson(updatedObj, userId, type);
+            onPostUserData(jsonData); 
+            let planID = apiTypes[type]
+            let param = { usagePlanId: planID, keyId: data['id'], keyType: "API_KEY" }
+            apigateway.createUsagePlanKey(param, function (err, data) {
+                if (err) {
+                    setErrorModal(err)
+                } else {
+                    showSuccessModal(true);
+                }
+            });
         }
     });
 }
 
 // update name and status of the AWS api key
-export const updateAWSApi = (data, apiData,userId, onUpdateUserData, toggleFunction, setErrorModal) => {
+export const updateAWSApi = (data, apiData, userId, onUpdateUserData, toggleFunction, setErrorModal) => {
     let params = {
         apiKey: data.client_id,
         patchOperations: [
@@ -93,14 +109,16 @@ export const updateAWSApi = (data, apiData,userId, onUpdateUserData, toggleFunct
             });
             let updatedObj = { ...data };
             updatedObj['value'] = value;
-            let jsonData = createAWSjson(updatedObj,userId);
+            let type='update';
+            let jsonData = createAWSjson(updatedObj, userId, type);
             onUpdateUserData(jsonData, key);
             toggleFunction(false)
         }
     });
 }
 // delete AWS api key
-export const deletAWSApiKey = (key, toggleShowSpinnerForContent, apiData,onDeleteUserData,setErrorModal ) => {
+export const deletAWSApiKey = (key, toggleShowSpinnerForContent, apiData, onDeleteUserData, setErrorModal) => {
+    console.log("key is", key);
     var params = {
         apiKey: key
     };

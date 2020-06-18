@@ -2,12 +2,10 @@
   width: 190vh;
   left: 5vh;
   background-color: #ffffffbf;
-  -webkit-box-shadow: 6px 6px 4px #ccc;
-  box-shadow: 6px 6px 4px #ccc;
   border: 1px solid #e0d8d8;
   position: absolute;
   text-align: center;
-  height: 10vh;
+  height: 8vh;
   display: flex;
   margin: 24px 0 0 4px;
   padding: -5px;
@@ -31,7 +29,7 @@
 }
   .btn {
     border-radius: 9vh;
-    background-color: #402720;
+    background-color: #194752ed;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -70,6 +68,7 @@
     right: 0;
   }
   .AddContainer{
-    padding: 1vh;
+    padding: 1px;
     color: #18444e;
+    cursor: pointer;
   }

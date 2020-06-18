@@ -16,6 +16,8 @@ import Banner from "../../components/UI/Banner/Banner";
 import Infomation from "../../components//Information/Information";
 import Cookie from "../../components/UI/Cookie/Cookie";
 import Text from "../../components/UI/Text/Text";
+import Footer from '../../components/Navigation/Footer/Footer'
+
 let errorMessage = null;
 class Auth extends Component {
   //Local state Mananagemnt for the form elements
@@ -342,6 +344,7 @@ class Auth extends Component {
 
           <Infomation />
          <Text/>
+         <Footer />
         </div>
       </Aux>
     );

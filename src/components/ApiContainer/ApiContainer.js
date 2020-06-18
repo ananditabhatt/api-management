@@ -14,7 +14,7 @@ const apiContainer = props => {
                         setShowKeyGen={props.setShowKeyGen}
                         keyGenModalData={props.keyGenModalData}
                         populateKeyGenModalHandler={(data) => {props.populateKeyGenModalHandler(data)}}
-                        generateAWSApiKeyHandler={(data) => {props.generateAWSApiKeyHandler(data)}} />
+                        generateAWSApiKeyHandler={(data, type) => {props.generateAWSApiKeyHandler(data, type)}} />
                     {(props.apiData && !props.showSpinnerForContent && props.profileInfo) ?
                         <ApiData
                             deletAWSApiKeyHandler={(data) => props.deletAWSApiKeyHandler(data)}
@@ -23,7 +23,7 @@ const apiContainer = props => {
                             scopeModal={props.scopeModal}
                             showScopeModal={props.showScopeModal}
                             scopetable={props.scopetable}
-                            populateScopeTableHandler={(data) => { props.populateScopeTable(data); props.showScopeModal(true); }}
+                            populateScopeTableHandler={(data) => { props.populateScopeTableHandler(data); props.showScopeModal(true); }}
                             editModal={props.editModal}
                             showEditModal={props.showEditModal}
                             populateEditModal={(data) => { props.populateEditModal(data); props.showEditModal(true); }}

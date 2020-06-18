@@ -14,24 +14,24 @@
   box-sizing: border-box;
   border-radius: 42px;
 }
-.curved-div {
+.curveddiv {
   position: relative;
-  background: #194752ed;
+  /* background: #194752ed; */
   color: #FFF;
   margin: 0;
   text-align: center;
   overflow: hidden;
 }
-.curved-div svg {
+.curveddiv svg {
   display: block;
 }
-.curved-div.upper {
+.curveddiv.upper {
   background: #fff;
 }
 
 .TitleText{
   color: white;
-  font-size: 20px;
+  font-size: 16px;
   font-family: sans-serif;
 }
 .Title{

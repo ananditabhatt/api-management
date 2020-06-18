@@ -9,7 +9,7 @@ const KeyGenerator = props => {
         const keyGenData = (<KeyGenModal
             showKeyGen={props.showKeyGen}
             setShowKeyGen={props.setShowKeyGen}
-            generateAWSApiKeyHandler={(data) => {props.generateAWSApiKeyHandler(data)}} />);
+            generateAWSApiKeyHandler={(data, type) => {props.generateAWSApiKeyHandler(data, type)}} />);
 
         props.populateKeyGenModalHandler(keyGenData);
     };
@@ -19,7 +19,7 @@ const KeyGenerator = props => {
         <div className={classes.KeyGeneratorContainer}>
             <span className={classes.AddContainer}>
                 <i onClick={() => { getKeyGen(props) }} className="material-icons medium">add_circle</i></span>
-            <span className={classes.AddContainer}>
+            <span onClick={() => { getKeyGen(props) }}  className={classes.AddContainer}>
                 <h5><strong>Generate New API Key</strong></h5>
             </span>
             <Modal modalClosed={() => props.setShowKeyGen(false)} show={props.showKeyGen}>{props.keyGenModalData}</Modal>

@@ -3,7 +3,7 @@
     width: 100%;
     top: 272vh;
     height: 39%;
-    position: absolute;
+    position: inherit;
     z-index: -3;
     background-color: #29545e;
 }

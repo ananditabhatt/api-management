@@ -27,7 +27,7 @@ export default function SimplePopover(props) {
 
     return (
         <div>
-            <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>{props.tempVal}</Button>
+            <i aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>{props.tempVal}</i>
             <Popover
                 id={id}
                 open={open}
